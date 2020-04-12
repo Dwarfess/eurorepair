@@ -12,7 +12,8 @@
         <div class="left_side_text">
           <h2>your own electron</h2>
           <h1>project</h1>
-          <p class="left_side_text_description">You have the opportunity to create your own renovation project.
+          <p class="left_side_text_description">You have the opportunity to create your own renovation
+            project.
             The main idea is to fill the correct dimensions of your current work object
             and get the exact amount of materials needed. And also calculate all your work automatically
             instead of you.
@@ -21,7 +22,7 @@
         </div>
 
         <div class="left_side_buttons">
-          <button class="ui big inverted yellow button">Yellow</button>
+          <button class="ui big inverted yellow button" @click="openNewProject">Create new</button>
         </div>
 
       </div>
@@ -34,40 +35,41 @@
 </template>
 
 <script lang="js">
-  import Slides from './Slides.vue';
-  import MainVideo from './MainVideo.vue';
+    import Slides from './Slides.vue';
+    import MainVideo from './MainVideo.vue';
 
-  export default  {
-    name: 'home',
-    components: {
-      Slides,
-      MainVideo
-    },
-    props: [],
-    mounted () {
+    export default {
+        name: 'home',
+        components: {
+            Slides,
+            MainVideo
+        },
+        props: [],
+        mounted() {
 
-    },
-    data () {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
-    computed: {
-
+        },
+        data() {
+            return {}
+        },
+        methods: {
+            openNewProject() {
+                this.$router.push({ path: `/project` })
+            }
+        },
+        computed: {}
     }
-}
 
 
 </script>
 
 <style scoped lang="scss">
-  $firstColor: #ffe21f;
+  @import '../variables';
 
   .src-components-home {
+    margin: 0;
     height: 100%;
+    background: url("../assets/img/body6.jpg") no-repeat top center;
+    background-size: cover;
 
     .container {
       height: 100%;
@@ -76,7 +78,7 @@
 
       .left_side {
         float: left;
-        color: white;
+        color: $mainColor;
         width: 45%;
         padding-right: 10%;
 
@@ -84,8 +86,9 @@
           margin-top: 100px;
           font-weight: bold;
           text-align: left;
+
           span {
-            color:$firstColor;
+            color: $subColor;
             margin-right: 10px;
           }
         }
@@ -104,7 +107,7 @@
         }
 
         h1 {
-          font-size: 70px;
+          font-size: 72px;
           margin: 0;
           text-transform: uppercase;
           text-align: left;
@@ -124,7 +127,8 @@
             letter-spacing: 2px;
             text-align: left;
             line-height: 24px;
-            color: lightsteelblue;
+            color: $mainColor;
+            opacity: .7;
           }
         }
 

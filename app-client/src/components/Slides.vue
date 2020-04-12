@@ -112,7 +112,7 @@
 
             .card {
                 width: 100%;
-                margin: 20px;
+                margin: 5% 8%;
 
                 .image {
                     border-radius: 4px 4px 0 0;

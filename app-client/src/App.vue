@@ -1,24 +1,26 @@
 <template>
     <div id="app">
-        <Home></Home>
+        <LeftSidebar></LeftSidebar>
+
+        <div class="mainContainer">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
 <script>
-    import Home from './components/Home.vue';
+    import LeftSidebar from './components/left-sidebar/LeftSidebar.vue';
 
     export default {
         name: 'app',
         components: {
-            Home
+            LeftSidebar
         }
     }
 </script>
 
 <style>
     body {
-        height: 100vh;
-        margin: 0;
         background-color: lightgrey;
     }
 
@@ -29,9 +31,13 @@
         text-align: center;
         color: #2c3e50;
         height: 100%;
-        width: 80%;
-        margin: 0 auto;
-        background: url("./assets/img/body6.jpg") no-repeat top center;
-        background-size: cover;
+        width: 100%;
+        margin: 0;
+    }
+
+    .mainContainer {
+        margin: 0 100px 0 200px;
+        height: 100%;
+        background: #2c3e50;
     }
 </style>
