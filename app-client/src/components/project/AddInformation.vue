@@ -7,16 +7,16 @@
         <sui-form>
           <sui-form-fields fields="three">
             <sui-form-field>
-              <label>Length</label>
-              <input type="number" placeholder="Length" min="0" />
+              <label>Length: </label>
+              <input type="number" v-model='mainParams.length' placeholder="Length" min="0" />
             </sui-form-field>
             <sui-form-field>
-              <label>Width</label>
-              <input type="number" placeholder="Width" min="0" />
+              <label>Width: </label>
+              <input type="number" v-model='mainParams.width' placeholder="Width" min="0" />
             </sui-form-field>
             <sui-form-field>
-              <label>Height</label>
-              <input type="number" placeholder="Height" min="0" />
+              <label>Height: </label>
+              <input type="number" v-model='mainParams.height' placeholder="Height" min="0" />
             </sui-form-field>
           </sui-form-fields>
         </sui-form>
@@ -35,7 +35,7 @@
 
     export default {
         name: 'add-information',
-        props: [],
+        props: ['mainParams'],
         mounted() {
 
         },
@@ -68,8 +68,22 @@
           .field {
             width: 100%;
             margin-bottom: 10px;
+
+            label {
+              display: inline-block;
+              width: 40%;
+              padding: 10px 0;
+            }
+
+            input {
+              width: 60%;
+            }
           }
         }
+      }
+
+      .actions  {
+        padding: 10px;
       }
     }
   }

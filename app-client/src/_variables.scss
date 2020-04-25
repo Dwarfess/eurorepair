@@ -2,3 +2,12 @@ $mainColor: #ffffff;
 $subColor: #ffe21f;
 
 $subBgColor: #2c3e50;
+
+.yellow:not(.inverted) {
+  background-color: $subColor !important;
+  color: rgba(0,0,0,.6) !important;
+
+  &:hover {
+    background-color: #fbbd08 !important;
+  }
+}
