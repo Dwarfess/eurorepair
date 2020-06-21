@@ -1,32 +1,84 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <LeftSidebar></LeftSidebar>
+
+    <div class="mainContainer">
+      <router-view></router-view>
     </div>
-    <router-view/>
+
+    <div class="footer">
+      <div class="border-gradient"></div>
+      <span class="copyright">Copyright ©</span>
+    </div>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+    import LeftSidebar from './components/left-sidebar/LeftSidebar.vue';
 
-#nav {
-  padding: 30px;
-}
+    export default {
+        name: 'app',
+        components: {
+            LeftSidebar
+        }
+    }
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+<style lang="scss">
+  @import './_variables.scss';
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  body {
+    background-color: lightgrey;
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    position: relative;
+
+    .mainContainer {
+      margin: 0 100px 0 200px;
+      height: 100%;
+      background: $subBgColor;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 210px;
+      right: 110px;
+      text-align: right;
+
+      .border-gradient {
+        width: 100%;
+        padding: 1px;
+        background: linear-gradient(
+                        to right,
+                        $mainColor,
+                        $mainColor,
+                        $mainColor,
+                        $mainColor,
+                        rgba(0, 0, 0, 0.1),
+                        rgba(0, 0, 0, 0),
+                        rgba(0, 0, 0, 0),
+                        rgba(0, 0, 0, 0.1),
+                        $subColor,
+                        $subColor,
+                        $subColor
+        );
+      }
+
+      .copyright {
+        color: $subColor;
+        margin: 5px 0;
+        display: inline-block;
+      }
+    }
+  }
 </style>
