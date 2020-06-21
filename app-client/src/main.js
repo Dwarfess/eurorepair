@@ -16,8 +16,6 @@ Vue.use(PortalVue);
 Vue.use(SemanticUI);
 Vue.use(VueRouter);
 
-Vue.config.productionTip = false;
-
 const router = new VueRouter({
 	routes: [
 		{ path: '/', component: Home },

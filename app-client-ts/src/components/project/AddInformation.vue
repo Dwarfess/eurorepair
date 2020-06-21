@@ -1,23 +1,22 @@
 <template lang="html">
 
-  <section class="add-edit-information">
+  <section class="add-information">
     <sui-button @click.native="toggle" icon="edit" color="yellow"/>
-    <sui-button @click.native="toggle" icon="add" color="yellow"/>
     <sui-modal v-model="open">
       <sui-modal-content>
         <sui-form>
           <sui-form-fields fields="three">
             <sui-form-field>
               <label>Length: </label>
-<!--              <input type="number" v-model='params.length' placeholder="Length" min="0" />-->
+              <input type="number" v-model='mainParams.length' placeholder="Length" min="0" />
             </sui-form-field>
             <sui-form-field>
               <label>Width: </label>
-              <input type="number" v-model='params.width' placeholder="Width" min="0" />
+              <input type="number" v-model='mainParams.width' placeholder="Width" min="0" />
             </sui-form-field>
             <sui-form-field>
               <label>Height: </label>
-              <input type="number" v-model='params.height' placeholder="Height" min="0" />
+              <input type="number" v-model='mainParams.height' placeholder="Height" min="0" />
             </sui-form-field>
           </sui-form-fields>
         </sui-form>
@@ -35,8 +34,8 @@
 <script lang="js">
 
     export default {
-        name: 'add-edit-information',
-        props: ['params'],
+        name: 'add-information',
+        props: ['mainParams'],
         mounted() {
 
         },
@@ -44,8 +43,7 @@
             return { open: false };
         },
         methods: {
-            toggle(e) {
-                e.stopPropagation();
+            toggle() {
                 this.open = !this.open;
             },
         },
@@ -56,7 +54,7 @@
 </script>
 
 <style scoped lang="scss">
-  .add-edit-information {
+  .add-information {
     /deep/.ui.standard.modal {
       width: 200px !important;
 
