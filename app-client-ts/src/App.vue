@@ -28,7 +28,7 @@
   @import './_variables.scss';
 
   body {
-    background-color: lightgrey;
+    margin: 0;
   }
 
   #app {
@@ -37,7 +37,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     margin: 0;
     position: relative;

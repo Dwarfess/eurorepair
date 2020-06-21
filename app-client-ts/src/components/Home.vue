@@ -7,7 +7,12 @@
           <p><span>—</span> 2019</p>
         </div>
 
-        <div class="logo"></div>
+        <div class="logo">
+          <div class="layout layout_1"></div>
+          <div class="layout layout_2"></div>
+          <div class="layout layout_3"></div>
+          <div class="logo_title">er</div>
+        </div>
 
         <div class="left_side_text">
           <h2>your own electron</h2>
@@ -34,31 +39,24 @@
 
 </template>
 
-<script lang="js">
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+
     import Slides from './Slides.vue';
     import MainVideo from './MainVideo.vue';
 
-    export default {
-        name: 'home',
+    @Component({
         components: {
             Slides,
             MainVideo
         },
-        props: [],
-        mounted() {
-
-        },
-        data() {
-            return {}
-        },
-        methods: {
-            openNewProject() {
-                this.$router.push({ path: `/project` })
-            }
-        },
-        computed: {}
+        directives: {}
+    })
+    export default class Home extends Vue {
+        private openNewProject(): void {
+            this.$router.push({ path: `/project` })
+        }
     }
-
 
 </script>
 
@@ -74,7 +72,7 @@
     .container {
       height: 100%;
       padding: 0 40px;
-      background: linear-gradient(rgba(12, 67, 86, 0.34), rgb(1, 41, 110));
+      background: linear-gradient(rgba(44, 62, 80, 0.34), $subBgColor, $subBgColor);
 
       .left_side {
         float: left;
@@ -97,13 +95,50 @@
           width: 200px;
           height: 200px;
           margin: 100px 0 60px;
-          background: url("../assets/img/logo.png") no-repeat top center;
-          background-size: contain;
+          position: relative;
+          /*background: url("../assets/img/logo.png") no-repeat top center;*/
+          /*background-size: contain;*/
+
+          &_title {
+            position: absolute;
+            width: 80%;
+            margin-top: 33%;
+            font-size: 300%;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: $forthColor;
+          }
+
+          .layout {
+            width: 60%;
+            height: 60%;
+            left: 10%;
+            position: absolute;
+            border: 2px solid white;
+            transform: rotate(45deg);
+
+            &_1 {
+              top: 0%;
+              border-color: $subColor;
+            }
+
+            &_2 {
+              top: 10%;
+              border-color: $forthColor;
+            }
+
+            &_3 {
+              top: 20%;
+              border-color: $thirdColor;
+            }
+          }
 
           &:hover {
-            background-image: url("../assets/img/logo_hover.png");
+            /*background-image: url("../assets/img/logo_hover.png");*/
             cursor: pointer;
           }
+
+
         }
 
         h1 {
