@@ -19,13 +19,13 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/app-client/dist/'));
+app.use(express.static(__dirname + '/app-client-ts/dist/'));
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/app-client/dist/index.html'));
+  res.sendFile(path.join(__dirname + '/app-client-ts/dist/index.html'));
 });
 
 // catch 404 and forward to error handler

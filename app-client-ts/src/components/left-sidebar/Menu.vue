@@ -32,24 +32,16 @@
 
 </template>
 
-<script lang="js">
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    export default {
-        name: 'sidebar-menu',
-        props: [],
-        mounted() {
-
-        },
-        data() {
-            return {
-                visible: false
-            }
-        },
-        methods: {},
-        computed: {}
+    @Component({
+        components: {},
+        directives: {}
+    })
+    export default class Menu extends Vue {
+      private visible: boolean = true;
     }
-
-
 </script>
 
 <style scoped lang="scss">

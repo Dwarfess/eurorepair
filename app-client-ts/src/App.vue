@@ -13,15 +13,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
     import LeftSidebar from './components/left-sidebar/LeftSidebar.vue';
 
-    export default {
-        name: 'app',
+    @Component({
         components: {
             LeftSidebar
-        }
-    }
+        },
+        directives: {}
+    })
+    export default class App extends Vue {}
 </script>
 
 <style lang="scss">

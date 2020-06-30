@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <section class="src-components-main-video">
+  <section class="main-video">
     <div class="description">
       <h2>Guide</h2>
       <p>Short video showing how to use this application</p>
@@ -17,29 +17,22 @@
 
 </template>
 
-<script lang="js">
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    export default {
-        name: 'src-components-main-video',
-        props: [],
-        mounted() {
-
-        },
-        data() {
-            return {
-                image: require('../assets/img/main-video.jpg')
-            }
-        },
-        methods: {},
-        computed: {}
+    @Component({
+        components: {},
+        directives: {}
+    })
+    export default class MainVideo extends Vue {
+        private image: any = require('../assets/img/main-video.jpg');
     }
-
 </script>
 
 <style scoped lang="scss">
   @import '../variables';
 
-  .src-components-main-video {
+  .main-video {
     width: 35%;
     margin-top: 550px;
     padding-left: 4%;

@@ -1,45 +1,23 @@
 <template lang="html">
 
-  <section class="src-components-slides">
-    <!--        <sui-card-group :items-per-row="3">-->
-    <!--            <sui-card v-for="slide of slides" v-bind:key="slide.id">-->
-    <!--                <sui-dimmer-dimmable-->
-    <!--                        @mouseenter.native="slide.active = true"-->
-    <!--                        @mouseleave.native="slide.active = false"-->
-    <!--                >-->
-    <!--                    <sui-image :src="slide.image"/>-->
-    <!--                    <sui-dimmer blurring :active="slide.active">-->
-    <!--                        <sui-button inverted>Open page</sui-button>-->
-    <!--                    </sui-dimmer>-->
-    <!--                </sui-dimmer-dimmable>-->
-    <!--                <sui-card-content>-->
-    <!--                    <sui-card-header>{{slide.name}}</sui-card-header>-->
-    <!--                    <sui-card-meta>Create in Sep 2014</sui-card-meta>-->
-    <!--                </sui-card-content>-->
-    <!--            </sui-card>-->
-    <!--        </sui-card-group>-->
-
-
-    <div class="ui special cards">
-      <div class="card" v-for="slide of slides" v-bind:key="slide.id">
-        <div class="blurring dimmable image">
-          <div class="ui dimmer">
-            <div class="content">
-              <div class="center">
-                <div class="ui inverted button">Add Friend</div>
-              </div>
-            </div>
-          </div>
-          <img :src="slide.image"/>
-        </div>
-        <div class="content">
-          <a class="header">{{slide.name}}</a>
-          <div class="meta">
-            <span class="date">Created in Sep 2014</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <section class="slides">
+    <sui-card-group :items-per-row="3">
+      <sui-card v-for="slide of slides" v-bind:key="slide.id">
+        <sui-dimmer-dimmable
+                @mouseenter.native="slide.active = true"
+                @mouseleave.native="slide.active = false"
+        >
+          <sui-image :src="slide.image"/>
+          <sui-dimmer blurring :active="slide.active">
+            <sui-button inverted>Open page</sui-button>
+          </sui-dimmer>
+        </sui-dimmer-dimmable>
+        <sui-card-content>
+          <sui-card-header>{{slide.name}}</sui-card-header>
+          <sui-card-meta>Create in Sep 2014</sui-card-meta>
+        </sui-card-content>
+      </sui-card>
+    </sui-card-group>
   </section>
 
 </template>
@@ -96,17 +74,11 @@
             body: require('../assets/img/body.jpg'),
             body3: require('../assets/img/body3.jpg')
         };
-
-        mounted(): void {
-            ($('.special.cards .image') as any).dimmer({
-                on: 'hover'
-            });
-        }
     }
 </script>
 
 <style scoped lang="scss">
-  .src-components-slides {
+  .slides {
     width: 20%;
     height: 100%;
     float: left;
@@ -120,7 +92,7 @@
       display: none;
     }
 
-    .ui.special.cards {
+    .ui.three.cards {
       margin: 0;
 
       .card {
@@ -128,9 +100,7 @@
         margin: 5% 8%;
 
         .image {
-          img {
-            border-radius: 4px 4px 0 0;
-          }
+          border-radius: 4px 4px 0 0;
         }
       }
     }

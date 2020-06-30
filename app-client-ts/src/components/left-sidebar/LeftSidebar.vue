@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <section class="src-components-left-sidebar">
+  <section class="left-sidebar">
     <router-link to="/">
       <div class="logo"></div>
     </router-link>
@@ -17,32 +17,23 @@
 
 </template>
 
-<script lang="js">
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
     import Menu from './Menu.vue';
 
-    export default {
-        name: 'src-components-left-sidebar',
+    @Component({
         components: {
             Menu
         },
-        props: [],
-        mounted() {
-
-        },
-        data() {
-            return {}
-        },
-        methods: {},
-        computed: {}
-    }
-
-
+        directives: {}
+    })
+    export default class LeftSidebar extends Vue {}
 </script>
 
 <style scoped lang="scss">
   @import '../../variables';
 
-  .src-components-left-sidebar {
+  .left-sidebar {
     float: left;
     width: 100px;
     height: 100%;

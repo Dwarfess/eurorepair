@@ -29,26 +29,17 @@
 
 </template>
 
-<script lang="js">
-    import ProjectEditor from "./ProjectEditor";
+<script lang="ts">
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import ProjectEditor from './ProjectEditor';
 
-    export default {
-        name: 'project-page',
+    @Component({
         components: {
             ProjectEditor
         },
-        props: [],
-        mounted() {
-
-        },
-        data() {
-            return {}
-        },
-        methods: {},
-        computed: {}
-    }
-
-
+        directives: {}
+    })
+    export default class ProjectPage extends Vue {}
 </script>
 
 <style scoped lang="scss">

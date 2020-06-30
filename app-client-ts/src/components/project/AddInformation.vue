@@ -1,22 +1,22 @@
 <template lang="html">
 
   <section class="add-information">
-    <sui-button @click.native="toggle" icon="edit" color="yellow"/>
+    <sui-button @click.native="toggle" :icon="params.length ? 'edit': 'add'" color="yellow"/>
     <sui-modal v-model="open">
       <sui-modal-content>
         <sui-form>
           <sui-form-fields fields="three">
             <sui-form-field>
               <label>Length: </label>
-              <input type="number" v-model='mainParams.length' placeholder="Length" min="0" />
+              <input type="number" v-model='params.length' placeholder="Length" min="0" />
             </sui-form-field>
             <sui-form-field>
               <label>Width: </label>
-              <input type="number" v-model='mainParams.width' placeholder="Width" min="0" />
+              <input type="number" v-model='params.width' placeholder="Width" min="0" />
             </sui-form-field>
             <sui-form-field>
               <label>Height: </label>
-              <input type="number" v-model='mainParams.height' placeholder="Height" min="0" />
+              <input type="number" v-model='params.height' placeholder="Height" min="0" />
             </sui-form-field>
           </sui-form-fields>
         </sui-form>
@@ -31,26 +31,23 @@
 
 </template>
 
-<script lang="js">
+<script lang="ts">
 
-    export default {
-        name: 'add-information',
-        props: ['mainParams'],
-        mounted() {
+    import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
 
-        },
-        data() {
-            return { open: false };
-        },
-        methods: {
-            toggle() {
-                this.open = !this.open;
-            },
-        },
-        computed: {}
+    @Component({
+        components: {},
+        directives: {}
+    })
+    export default class AddInformation extends Vue {
+        @Prop() private readonly params: Object;
+
+        private open: boolean = false;
+
+        private toggle(): void {
+            this.open = !this.open;
+        }
     }
-
-
 </script>
 
 <style scoped lang="scss">
