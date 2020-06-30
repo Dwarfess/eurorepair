@@ -16,6 +16,7 @@
     "ordered-imports": false,
     "quotemark": [true, "single"],
     "member-access": [true, "no-public"],
+    "semicolon": [false, "ignore"],
     "trailing-comma": [true, {
       "singleline": "never",
       "multiline": {

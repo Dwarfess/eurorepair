@@ -24,7 +24,6 @@
 
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
-    import $ from 'jquery';
 
     @Component({
         components: {},

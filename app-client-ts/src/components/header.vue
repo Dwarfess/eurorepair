@@ -12,14 +12,8 @@
 
     export default {
         name: 'src-components-header',
-        components: {
-
-        },
         props: {
             msg: String
-        },
-        mounted() {
-
         },
         data() {
             return {}
