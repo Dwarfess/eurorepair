@@ -3,68 +3,45 @@
   <section class="project-editor">
     <h2>Information</h2>
 
-    <div class="main_params">
-      <sui-accordion>
-        <sui-accordion-title>
-          <h3>Main information
-            <sui-icon name="dropdown"/>
-          </h3>
+    <div class="project_params" v-for="category in projectParams">
+      <div class="sectors" v-for="room in category" :key="room.id">
+        <div class="sector_params">
+          <sui-accordion>
+            <sui-accordion-title>
+              <h3 v-if="room.category !== 'mainParam'">
+                <span class="category">{{room.category}}</span> - {{room.name}}
+                <sui-icon name="dropdown"/>
+              </h3>
+              <h3 v-else>Main Params
+                <sui-icon name="dropdown"/>
+              </h3>
 
-          <div class="add_edit_information_wrapper">
-            <AddInformation :params="projectParams.mainParams"></AddInformation>
-          </div>
-        </sui-accordion-title>
+              <div class="add_edit_information_wrapper">
+                <EditInformation :params="room"></EditInformation>
+              </div>
+            </sui-accordion-title>
 
-        <sui-accordion-content>
-          <div class="length param">
-            <span class="param_title">Length: </span>
-            <span class="param_value">{{projectParams.mainParams.length}}</span>
-          </div>
-          <div class="width param">
-            <span class="param_title">Width: </span>
-            <span class="param_value">{{projectParams.mainParams.width}}</span>
-          </div>
-          <div class="height param">
-            <span class="param_title">Height: </span>
-            <span class="param_value">{{projectParams.mainParams.height}}</span>
-          </div>
-        </sui-accordion-content>
-      </sui-accordion>
-    </div>
-
-    <div class="sectors" v-for="room in projectParams.rooms" :key="room.id">
-      <div class="sector_params">
-        <sui-accordion>
-          <sui-accordion-title>
-            <h3>{{room.name}}
-              <sui-icon name="dropdown"/>
-            </h3>
-
-            <div class="add_edit_information_wrapper">
-              <AddInformation :params="room"></AddInformation>
-            </div>
-          </sui-accordion-title>
-
-          <sui-accordion-content>
-            <div class="length param">
-              <span class="param_title">Length: </span>
-              <span class="param_value">{{room.length}}</span>
-            </div>
-            <div class="width param">
-              <span class="param_title">Width: </span>
-              <span class="param_value">{{room.width}}</span>
-            </div>
-            <div class="height param">
-              <span class="param_title">Height: </span>
-              <span class="param_value">{{room.height}}</span>
-            </div>
-          </sui-accordion-content>
-        </sui-accordion>
+            <sui-accordion-content>
+              <div class="length param">
+                <span class="param_title">Length: </span>
+                <span class="param_value">{{room.length}}</span>
+              </div>
+              <div class="width param">
+                <span class="param_title">Width: </span>
+                <span class="param_value">{{room.width}}</span>
+              </div>
+              <div class="height param">
+                <span class="param_title">Height: </span>
+                <span class="param_value">{{room.height}}</span>
+              </div>
+            </sui-accordion-content>
+          </sui-accordion>
+        </div>
       </div>
     </div>
 
     <div class="add_edit_information_wrapper ">
-      <AddInformation :params="{}"></AddInformation>
+      <EditInformation :params="{}"></EditInformation>
     </div>
   </section>
 
@@ -74,11 +51,11 @@
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
     import {Project} from '@/components/Types';
-    import AddInformation from '@/components/project/AddInformation';
+    import EditInformation from '@/components/project/EditInformation.vue';
 
     @Component({
         components: {
-            AddInformation
+            EditInformation
         },
         directives: {}
     })
@@ -126,6 +103,10 @@
             float: left;
             color: $subColor;
             margin: 10px 0 0 0;
+
+            .category {
+              text-transform: capitalize;
+            }
           }
         }
 

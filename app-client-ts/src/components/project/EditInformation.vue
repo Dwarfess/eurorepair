@@ -1,15 +1,14 @@
 <template lang="html">
 
   <section class="add-information" @click.stop>
-    <sui-button @click.native="toggleEditor" :icon="editorParams.length ? 'edit': 'add'" color="yellow"/>
+    <sui-button @click.native="toggleEditor" :icon="editorParams.id ? 'edit': 'add'" color="yellow"/>
     <sui-modal v-model="openEditor">
       <sui-modal-content>
         <sui-form>
           <sui-form-fields fields="three">
-            <sui-form-field>
-              <label>State: </label>
+            <sui-form-field v-if="category !== 'mainParam'">
+              <label>Category: </label>
               <sui-dropdown
-                      placeholder="State"
                       selection
                       :options="categories"
                       v-model="category"
@@ -17,19 +16,19 @@
             </sui-form-field>
             <sui-form-field>
               <label>Name: </label>
-              <input type="text" v-model='editorParams.name' placeholder="Name" min="0"/>
+              <input type="text" v-model='editorParams.name' placeholder="Name" min="0" required/>
             </sui-form-field>
             <sui-form-field>
               <label>Length: </label>
-              <input type="number" v-model='editorParams.length' placeholder="Length" min="0"/>
+              <input type="number" v-model='editorParams.length' placeholder="Length" min="0" required/>
             </sui-form-field>
             <sui-form-field>
               <label>Width: </label>
-              <input type="number" v-model='editorParams.width' placeholder="Width" min="0"/>
+              <input type="number" v-model='editorParams.width' placeholder="Width" min="0" required/>
             </sui-form-field>
             <sui-form-field>
               <label>Height: </label>
-              <input type="number" v-model='editorParams.height' placeholder="Height" min="0"/>
+              <input type="number" v-model='editorParams.height' placeholder="Height" min="0" required/>
             </sui-form-field>
           </sui-form-fields>
         </sui-form>
@@ -53,36 +52,55 @@
         components: {},
         directives: {}
     })
-    export default class AddInformation extends Vue {
+    export default class EditInformation extends Vue {
         @Prop() private readonly params: ProjectItem;
 
         private editorParams: ProjectItem;
         private openEditor: boolean = false;
         private category: string = 'room';
-        private readonly categories: Array<Category> = this.$store.state.categories;
+        private readonly categories: Category[] = this.$store.state.categories;
 
         created(): void {
             this.createCloneParams();
-            this.category = this.editorParams.category ? this.editorParams.category : 'kitchen';
+            this.category = this.editorParams.category || 'room';
         }
 
         private toggleEditor(): void {
             this.openEditor = !this.openEditor;
-            console.log(this.category);
         }
 
         private applyChanges(): void {
-            const category = this.$store.state.projectParams[`${this.editorParams.category}s`];
-            const index = category.map((item) => item.id).indexOf(this.editorParams.id);
-            console.log(this.category);
-            category[index].name = this.editorParams.name;
-            category[index].type = this.editorParams.category = this.category;
-            category[index].length = this.editorParams.length;
-            category[index].width = this.editorParams.width;
-            category[index].height = this.editorParams.height;
-            console.log(this.editorParams.category, 'this.editorParams.category');
-            console.log(this.category);
+            this.editorParams.category = this.category;
+
+            const category = this.getCategory(this.editorParams.category);
+            const id = this.editorParams.id;
+
+            if (this.editorParams.category === this.params.category) {
+                const index = category.map((item) => item.id).indexOf(id);
+
+                category[index].name = this.editorParams.name;
+                category[index].category = this.editorParams.category;
+                category[index].length = this.editorParams.length;
+                category[index].width = this.editorParams.width;
+                category[index].height = this.editorParams.height;
+            } else if (id) {
+                const oldCategory = this.getCategory(this.params.category);
+                const index = oldCategory.map((item) => item.id).indexOf(id);
+
+                oldCategory.splice(index, 1);
+                category.push(this.editorParams);
+            } else {
+                this.editorParams.id = Math.trunc(new Date().getTime() * Math.random());
+
+                category.push(this.editorParams);
+                this.editorParams = this.resetParams();
+            }
+
             this.toggleEditor();
+        }
+
+        private getCategory(category): ProjectItem[] {
+            return this.$store.state.projectParams[`${category}s`];
         }
 
         private cancelChanges(): void {
@@ -91,7 +109,19 @@
         }
 
         private createCloneParams(): void {
-            this.editorParams = Object.assign({}, this.params);
+            this.editorParams = this.params.id ? Object.assign({}, this.params) : this.resetParams();
+        }
+
+        private resetParams(): ProjectItem {
+            this.category = 'room';
+            return {
+                id: 0,
+                name: 'new',
+                category: 'room',
+                length: 1,
+                width: 1,
+                height: 1
+            }
         }
     }
 </script>

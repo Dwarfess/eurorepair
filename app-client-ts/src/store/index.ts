@@ -6,13 +6,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         projectParams: {
-            mainParams: {
-                name: 'test',
-                category: 'mainParam',
-                length: 20,
-                width: 30,
-                height: 3
-            },
+            mainParams: [
+                {
+                    id: Math.trunc(new Date().getTime() * Math.random()),
+                    name: 'test',
+                    category: 'mainParam',
+                    length: 20,
+                    width: 30,
+                    height: 3
+                }
+            ],
             rooms: [
                 {
                     id: Math.trunc(new Date().getTime() * Math.random()),
@@ -37,7 +40,6 @@ export default new Vuex.Store({
             hallways: []
         },
         categories: [
-            {text: 'mainParam', value: 'mainParam'},
             {text: 'room', value: 'room'},
             {text: 'kitchen', value: 'kitchen'},
             {text: 'restroom', value: 'restroom'},

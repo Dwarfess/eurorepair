@@ -6,7 +6,7 @@
         <div class="ui right labeled left icon input">
 
           <i class="tags icon"></i>
-          <input type="text" placeholder="Enter name">
+          <input type="text" placeholder="Enter name" :value="projectParams.mainParams[0].name" readonly>
           <a class="ui tag label">edit</a>
         </div>
       </div>
@@ -32,6 +32,7 @@
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
     import ProjectEditor from './ProjectEditor';
+    import { Project } from '../Types';
 
     @Component({
         components: {
@@ -39,7 +40,9 @@
         },
         directives: {}
     })
-    export default class ProjectPage extends Vue {}
+    export default class ProjectPage extends Vue {
+        private projectParams: Project = this.$store.state.projectParams;
+    }
 </script>
 
 <style scoped lang="scss">
