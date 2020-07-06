@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
+require("./app-server/schemas/db");
+var projectsRouter = require('./app-server/routes/projectsRouter');
 
 var app = express();
 
@@ -21,8 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/app-client-ts/dist/'));
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/projects', projectsRouter);
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + '/app-client-ts/dist/index.html'));

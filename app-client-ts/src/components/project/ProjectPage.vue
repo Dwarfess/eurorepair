@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <section class="project">
+  <section class="project" v-if="projectParams.mainParams[0]">
     <div class="project_article">
       <div class="project_article_name">
         <div class="ui right labeled left icon input">
@@ -18,7 +18,7 @@
 
     <div class="project_footer">
       <div is="sui-button-group">
-        <sui-button size="large" color="teal">Save</sui-button>
+        <sui-button size="large" color="teal" @click.native="saveProject">Save</sui-button>
         <sui-button-or size="large"/>
         <sui-button size="large" color="yellow">Reset</sui-button>
         <sui-button-or size="large"/>
@@ -31,6 +31,7 @@
 
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+
     import ProjectEditor from './ProjectEditor';
     import { Project } from '../Types';
 
@@ -42,6 +43,19 @@
     })
     export default class ProjectPage extends Vue {
         private projectParams: Project = this.$store.state.projectParams;
+
+        @Watch("$store.state.projectParams")
+        private watchProjectParams() {
+            this.projectParams = this.$store.state.projectParams;
+        }
+
+        beforeCreate(): void {
+            this.$store.dispatch('GET_PROJECT');
+        }
+
+        private saveProject() {
+            this.$store.dispatch('SAVE_PROJECT', this.projectParams);
+        }
     }
 </script>
 

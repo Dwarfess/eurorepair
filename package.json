@@ -1,5 +1,5 @@
 {
-  "name": "init",
+  "name": "EuroRepair",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,8 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.21",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.2",
     "vue-cli-plugin-build-watch": "^1.0.0"

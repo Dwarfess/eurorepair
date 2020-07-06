@@ -2,7 +2,7 @@
 
   <section class="slides">
     <sui-card-group :items-per-row="3">
-      <sui-card v-for="slide of slides" v-bind:key="slide.id">
+      <sui-card v-for="slide of slides" :key="slide.id">
         <sui-dimmer-dimmable
                 @mouseenter.native="slide.active = true"
                 @mouseleave.native="slide.active = false"
@@ -24,6 +24,13 @@
 
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import {Project} from "@/components/Types";
+
+    Vue.filter('getImage', (image) => {
+        debugger
+        // return require(image)
+        return image.replace(/["]+/g, '')
+    });
 
     @Component({
         components: {},
@@ -69,10 +76,17 @@
                 active: false
             }
         ];
-        private images = {
-            body: require('../assets/img/body.jpg'),
-            body3: require('../assets/img/body3.jpg')
-        };
+
+        mounted(): void {
+            // debugger
+            // this.$store.state.projects.forEach((project): void => {
+            //     project.image = require(project.image);
+            // });
+            // this.slides = this.$store.state.projects;
+
+            // this.slides[0].image =  require('../assets/img/body.jpg');
+            // this.$store.dispatch('SAVE_PROJECT', this.slides[0]);
+        }
     }
 </script>
 

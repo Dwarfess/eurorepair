@@ -20,15 +20,15 @@
             </sui-form-field>
             <sui-form-field>
               <label>Length: </label>
-              <input type="number" v-model='editorParams.length' placeholder="Length" min="0" required/>
+              <input type="number" v-model='editorParams.length' placeholder="Length" min="1" required/>
             </sui-form-field>
             <sui-form-field>
               <label>Width: </label>
-              <input type="number" v-model='editorParams.width' placeholder="Width" min="0" required/>
+              <input type="number" v-model='editorParams.width' placeholder="Width" min="1" required/>
             </sui-form-field>
             <sui-form-field>
               <label>Height: </label>
-              <input type="number" v-model='editorParams.height' placeholder="Height" min="0" required/>
+              <input type="number" v-model='editorParams.height' placeholder="Height" min="1" required/>
             </sui-form-field>
           </sui-form-fields>
         </sui-form>

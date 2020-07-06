@@ -9,8 +9,15 @@ export interface ProjectItem {
 }
 
 export interface Project {
-    mainParams: ProjectItem,
-    rooms: ProjectItem[]
+    _id?: number,
+    created: number,
+    image: string,
+    mainParams: ProjectItem[],
+    rooms: ProjectItem[],
+    kitchens: ProjectItem[],
+    restrooms: ProjectItem[],
+    bathrooms: ProjectItem[],
+    hallways: ProjectItem[]
 }
 
 export interface Category {

@@ -4,7 +4,7 @@
     <h2>Information</h2>
 
     <div class="project_params" v-for="category in projectParams">
-      <div class="sectors" v-for="room in category" :key="room.id">
+      <div class="sectors" v-if="Array.isArray(category)" v-for="room in category" :key="room.id">
         <div class="sector_params">
           <sui-accordion>
             <sui-accordion-title>
@@ -48,9 +48,9 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import { Vue, Component, Watch, Model } from 'vue-property-decorator';
 
-    import {Project} from '@/components/Types';
+    import  {Project } from '@/components/Types';
     import EditInformation from '@/components/project/EditInformation.vue';
 
     @Component({

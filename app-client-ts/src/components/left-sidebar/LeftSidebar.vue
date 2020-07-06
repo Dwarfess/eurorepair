@@ -2,7 +2,12 @@
 
   <section class="left-sidebar">
     <router-link to="/">
-      <div class="logo"></div>
+      <div class="logo">
+        <div class="layout layout_1"></div>
+        <div class="layout layout_2"></div>
+        <div class="layout layout_3"></div>
+        <div class="logo_title">er</div>
+      </div>
     </router-link>
 
     <Menu></Menu>
@@ -45,12 +50,10 @@
       height: 0;
       padding-bottom: 80%;
       margin: 40px auto;
-      background: url("../../assets/img/logo.png") no-repeat top center;
-      background-size: contain;
 
-      &:hover {
-        background-image: url("../../assets/img/logo_hover.png");
-        cursor: pointer;
+      &_title {
+        font-size: 160%;
+        margin-top: 32%;
       }
     }
 

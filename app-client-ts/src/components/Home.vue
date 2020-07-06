@@ -32,7 +32,7 @@
 
       </div>
 
-      <Slides></Slides>
+      <Slides v-if="projects.length"></Slides>
       <MainVideo></MainVideo>
     </div>
   </section>
@@ -40,8 +40,9 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import { Vue, Component, Watch, Model } from 'vue-property-decorator';
 
+    import { Project } from './Types';
     import Slides from './Slides.vue';
     import MainVideo from './MainVideo.vue';
 
@@ -53,6 +54,18 @@
         directives: {}
     })
     export default class Home extends Vue {
+        private projects: Project[] = [];
+
+        @Watch("$store.state.projects")
+        private watchProjectsParams() {
+            this.projects = this.$store.state.projects;
+            console.log(this.projects);
+        }
+
+        beforeCreate(): void {
+            this.$store.dispatch('GET_PROJECTS');
+        }
+
         private openNewProject(): void {
             this.$router.push({ path: `/project` })
         }
@@ -89,56 +102,6 @@
             color: $subColor;
             margin-right: 10px;
           }
-        }
-
-        .logo {
-          width: 200px;
-          height: 200px;
-          margin: 100px 0 60px;
-          position: relative;
-          /*background: url("../assets/img/logo.png") no-repeat top center;*/
-          /*background-size: contain;*/
-
-          &_title {
-            position: absolute;
-            width: 80%;
-            margin-top: 33%;
-            font-size: 300%;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: $forthColor;
-          }
-
-          .layout {
-            width: 60%;
-            height: 60%;
-            left: 10%;
-            position: absolute;
-            border: 2px solid white;
-            transform: rotate(45deg);
-
-            &_1 {
-              top: 0%;
-              border-color: $subColor;
-            }
-
-            &_2 {
-              top: 10%;
-              border-color: $forthColor;
-            }
-
-            &_3 {
-              top: 20%;
-              border-color: $thirdColor;
-            }
-          }
-
-          &:hover {
-            /*background-image: url("../assets/img/logo_hover.png");*/
-            cursor: pointer;
-          }
-
-
         }
 
         h1 {
