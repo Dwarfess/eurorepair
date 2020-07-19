@@ -26,18 +26,20 @@ export default new Vuex.Store({
         ]
     },
     mutations: {
-        SET_PROJECTS: (state, payload) => {
-            state.projects = payload;
+        SET_PROJECTS: (state, projects) => {
+            state.projects = projects;
         },
 
-        SET_PROJECT: (state, payload) => {
-            state.projectParams._id = payload[0]._id;
-            state.projectParams.mainParams = payload[0].mainParams;
-            state.projectParams.rooms = payload[0].rooms;
-            state.projectParams.kitchens = payload[0].kitchens;
-            state.projectParams.restrooms = payload[0].restrooms;
-            state.projectParams.bathrooms = payload[0].bathrooms;
-            state.projectParams.hallways = payload[0].hallways;
+        SET_PROJECT: (state, currentProject) => {
+            console.log(currentProject)
+            // state.projectParams._id = payload[0]._id;
+            // state.projectParams.mainParams = payload[0].mainParams;
+            // state.projectParams.rooms = payload[0].rooms;
+            // state.projectParams.kitchens = payload[0].kitchens;
+            // state.projectParams.restrooms = payload[0].restrooms;
+            // state.projectParams.bathrooms = payload[0].bathrooms;
+            // state.projectParams.hallways = payload[0].hallways;
+            state.projects.push(currentProject);
         },
 
         ADD_PROJECT: (state, payload) => {
@@ -46,18 +48,18 @@ export default new Vuex.Store({
     },
     actions: {
         GET_PROJECTS: async (context, payload) => {
-            let {data} = await Axios.get('/projects/getProject');
+            const {data} = await Axios.get('/projects');
             context.commit('SET_PROJECTS', data);
         },
 
-        GET_PROJECT: async (context, payload) => {
-            let {data} = await Axios.get('/projects/getProject');
+        GET_PROJECT: async (context, id) => {
+            const {data} = await Axios.get('/projects/getProject/' + id);
             context.commit('SET_PROJECT', data);
         },
 
         SAVE_PROJECT: async (context, payload) => {
-            let {data} = await Axios.post('/projects/updateProject', payload);
-            console.log(data);
+            console.log(payload)
+            const {data} = await Axios.post('/projects/updateProject', payload);
             context.commit('ADD_PROJECT', payload);
         },
     },

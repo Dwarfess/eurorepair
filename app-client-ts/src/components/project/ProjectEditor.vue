@@ -60,7 +60,21 @@
         directives: {}
     })
     export default class ProjectPage extends Vue {
-        private projectParams: Project = this.$store.state.projectParams;
+        private projectParams: Project;
+
+        beforeCreate(): void {
+            this.projectParams = undefined;
+            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id);
+            if (currentProject) {
+                this.projectParams = currentProject;
+            } else {
+                this.projectParams = this.$store.state.projectParams;
+            }
+        }
+
+        created(): void {
+            console.log('editor', this.projectParams)
+        }
     }
 </script>
 

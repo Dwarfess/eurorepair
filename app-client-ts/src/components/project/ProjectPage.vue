@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <section class="project" v-if="projectParams.mainParams[0]">
+  <section class="project" v-if="projectParams">
     <div class="project_article">
       <div class="project_article_name">
         <div class="ui right labeled left icon input">
@@ -32,7 +32,7 @@
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    import ProjectEditor from './ProjectEditor';
+    import ProjectEditor from './ProjectEditor.vue';
     import { Project } from '../Types';
 
     @Component({
@@ -42,15 +42,26 @@
         directives: {}
     })
     export default class ProjectPage extends Vue {
-        private projectParams: Project = this.$store.state.projectParams;
+        private projectParams: Project;
 
-        @Watch("$store.state.projectParams")
+        @Watch('$store.state.projects')
         private watchProjectParams() {
-            this.projectParams = this.$store.state.projectParams;
+            this.projectParams = this.$store.state.projects[0];
         }
 
         beforeCreate(): void {
-            this.$store.dispatch('GET_PROJECT');
+            this.projectParams = undefined;
+            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id);
+
+            if (currentProject) {
+                this.projectParams = currentProject;
+            } else {
+                this.$store.dispatch('GET_PROJECT', this.$route.params.id);
+            }
+        }
+
+        mounted(): void {
+            console.log(this.projectParams)
         }
 
         private saveProject() {

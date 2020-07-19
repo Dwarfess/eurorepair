@@ -1,7 +1,7 @@
 
 export interface ProjectItem {
     id: number,
-    name: string,
+    name: any,
     category: string,
     length: number,
     width: number,
@@ -10,7 +10,7 @@ export interface ProjectItem {
 
 export interface Project {
     _id?: number,
-    created: number,
+    created: string,
     image: string,
     mainParams: ProjectItem[],
     rooms: ProjectItem[],

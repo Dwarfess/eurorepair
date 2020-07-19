@@ -59,7 +59,6 @@
         @Watch("$store.state.projects")
         private watchProjectsParams() {
             this.projects = this.$store.state.projects;
-            console.log(this.projects);
         }
 
         beforeCreate(): void {
