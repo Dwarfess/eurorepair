@@ -2,7 +2,7 @@
 
   <section class="slides">
     <sui-card-group :items-per-row="3">
-      <sui-card  v-if="Array.isArray(slide.mainParams)" v-for="slide of slides" :key="slide.id">
+      <sui-card v-if="Array.isArray(slide.mainParams)" v-for="slide of slides" :key="slide.id">
         <sui-dimmer-dimmable
                 @mouseenter.native="slide.active = true"
                 @mouseleave.native="slide.active = false"
@@ -27,7 +27,7 @@
     import VueFilterDateFormat from 'vue-filter-date-format';
 
     Vue.use(VueFilterDateFormat);
-    import {Project} from "@/components/Types";
+    import {Project} from '@/components/Types';
 
     // Vue.filter('getImage', (image) => {
     //     debugger
@@ -43,46 +43,7 @@
     })
     export default class Slides extends Vue {
         private image: string = require('../assets/img/body6.jpg');
-        // private slides: Project[];
-        private slides = [
-            {
-                id: 1,
-                name: 'Archive',
-                image: require('../assets/img/body.jpg'),
-                created: new Date(),
-                active: false
-            }, {
-                id: 2,
-                name: 'Archive',
-                image: require('../assets/img/body2.jpg'),
-                created: new Date(),
-                active: false
-            }, {
-                id: 3,
-                name: 'Archive',
-                image: require('../assets/img/body3.jpg'),
-                created: new Date(),
-                active: false
-            }, {
-                id: 4,
-                name: 'Archive',
-                image: require('../assets/img/body4.jpg'),
-                created: new Date(),
-                active: false
-            }, {
-                id: 5,
-                name: 'Archive',
-                image: require('../assets/img/body5.jpg'),
-                created: new Date(),
-                active: false
-            }, {
-                id: 6,
-                name: 'Archive',
-                image: require('../assets/img/body6.jpg'),
-                created: new Date(),
-                active: false
-            }
-        ];
+        private slides: Project[] = [];
 
         mounted(): void {
             // debugger
@@ -97,7 +58,7 @@
         }
 
         private openSelectedProject(id): void {
-            this.$router.push({ name: 'projectPage', params: {id: id} });
+            this.$router.push({name: 'projectPage', params: {id}});
         }
     }
 </script>

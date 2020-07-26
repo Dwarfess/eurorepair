@@ -9,9 +9,11 @@ export interface ProjectItem {
 }
 
 export interface Project {
-    _id?: number,
+    _id?: any,
+    _tempId?: number,
     created: string,
     image: string,
+    active: boolean,
     mainParams: ProjectItem[],
     rooms: ProjectItem[],
     kitchens: ProjectItem[],

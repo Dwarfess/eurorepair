@@ -1,30 +1,42 @@
 <template lang="html">
 
-  <section class="project" v-if="projectParams">
-    <div class="project_article">
-      <div class="project_article_name">
-        <div class="ui right labeled left icon input">
+  <section class="project">
+    <span v-if="projectParams.mainParams">
+      <div class="project_article">
+        <div class="project_article_name">
+          <div class="ui right labeled left icon input">
+            <i class="tags icon"></i>
+            <input type="text" placeholder="Enter name" :value="projectParams.mainParams[0].name" readonly>
+            <a class="ui tag label">edit</a>
+          </div>
+        </div>
+        <div class="project_article_canvas">
 
-          <i class="tags icon"></i>
-          <input type="text" placeholder="Enter name" :value="projectParams.mainParams[0].name" readonly>
-          <a class="ui tag label">edit</a>
+        </div>
+        <ProjectEditor></ProjectEditor>
+      </div>
+
+      <div class="project_footer" v-if="projectParams.mainParams">
+        <div is="sui-button-group">
+          <sui-button size="large" color="teal" @click.native="saveProject">Save</sui-button>
+          <sui-button-or size="large"/>
+          <sui-button size="large" color="yellow" @click.native="resetProject" :disabled="!!projectParams._tempId">Reset</sui-button>
+          <sui-button-or size="large"/>
+          <sui-button size="large" @click.native="toggleDeletionConfirmationDialog" :disabled="!!projectParams._tempId">Delete</sui-button>
         </div>
       </div>
-      <div class="project_article_canvas">
 
-      </div>
-      <ProjectEditor></ProjectEditor>
-    </div>
-
-    <div class="project_footer">
+      <sui-modal v-model="showDeletionConfirmationDialog">
+      <sui-modal-content>
+        <p>Are you sure you want to delete <b>{{projectParams.mainParams[0].name}}</b> project?</p>
+      </sui-modal-content>
       <div is="sui-button-group">
-        <sui-button size="large" color="teal" @click.native="saveProject">Save</sui-button>
-        <sui-button-or size="large"/>
-        <sui-button size="large" color="yellow">Reset</sui-button>
-        <sui-button-or size="large"/>
-        <sui-button size="large">Default</sui-button>
+        <sui-button color="teal" @click.native="deleteProject">Confirm</sui-button>
+        <sui-button-or/>
+        <sui-button color="yellow" @click.native="cancelToDeleteProject">Cancel</sui-button>
       </div>
-    </div>
+    </sui-modal>
+    </span>
   </section>
 
 </template>
@@ -33,7 +45,7 @@
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
     import ProjectEditor from './ProjectEditor.vue';
-    import { Project } from '../Types';
+    import {Project} from '../Types';
 
     @Component({
         components: {
@@ -42,16 +54,36 @@
         directives: {}
     })
     export default class ProjectPage extends Vue {
-        private projectParams: Project;
+        private showDeletionConfirmationDialog: boolean = false;
+        private projectParams: Project = {};
 
         @Watch('$store.state.projects')
         private watchProjectParams() {
-            this.projectParams = this.$store.state.projects[0];
+            if (this.$store.state.projects[0] && Object.keys(this.projectParams).length === 0) {
+                this.projectParams = this.$store.state.projects[0];
+            }
         }
 
-        beforeCreate(): void {
-            this.projectParams = undefined;
-            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id);
+        @Watch('$route.params.id')
+        private watchRouteParams() {
+            this.resetProject();
+        }
+
+        created(): void {
+            this.renderPage();
+        }
+
+        private renderPage() {
+            const projectId = this.$route.params.id;
+
+            if (projectId === 'new') {
+                const newProject = JSON.parse(JSON.stringify(this.$store.state.newProject));
+
+                this.$store.state.projects.push(newProject);
+            }
+
+            const currentProject = this.$store.state.projects.find((project) => project._id === projectId
+                || project._tempId);
 
             if (currentProject) {
                 this.projectParams = currentProject;
@@ -60,12 +92,31 @@
             }
         }
 
-        mounted(): void {
-            console.log(this.projectParams)
+        private saveProject() {
+            if (this.projectParams._id) {
+                this.$store.dispatch('SAVE_PROJECT', this.projectParams);
+            } else {
+                this.$store.dispatch('CREATE_PROJECT', this.projectParams);
+            }
         }
 
-        private saveProject() {
-            this.$store.dispatch('SAVE_PROJECT', this.projectParams);
+        private resetProject() {
+            this.$store.state.projects = [];
+            this.projectParams = {};
+
+            this.renderPage();
+        }
+
+        toggleDeletionConfirmationDialog() {
+            this.showDeletionConfirmationDialog = !this.showDeletionConfirmationDialog;
+        }
+
+        private deleteProject() {
+            this.$store.dispatch('DELETE_PROJECT', this.projectParams._id);
+        }
+
+        private cancelToDeleteProject() {
+            this.toggleDeletionConfirmationDialog();
         }
     }
 </script>
@@ -102,6 +153,19 @@
       height: 52px;
       padding-top: 10px;
       text-align: left;
+    }
+
+    /deep/ .ui.standard.modal {
+      width: 202px;
+
+      .content, .buttons {
+        padding: 10px;
+
+        p {
+          font-size: initial;
+          text-align: center;
+        }
+      }
     }
   }
 </style>

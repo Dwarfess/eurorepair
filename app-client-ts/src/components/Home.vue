@@ -1,7 +1,7 @@
 <template lang="html">
 
   <section class="src-components-home">
-    <div class="container">
+    <div class="container" v-if="projects.length">
       <div class="left_side">
         <div class="left_side_year">
           <p><span>—</span> 2019</p>
@@ -32,7 +32,7 @@
 
       </div>
 
-      <Slides v-if="projects.length"></Slides>
+      <Slides></Slides>
       <MainVideo></MainVideo>
     </div>
   </section>
@@ -56,7 +56,7 @@
     export default class Home extends Vue {
         private projects: Project[] = [];
 
-        @Watch("$store.state.projects")
+        @Watch('$store.state.projects')
         private watchProjectsParams() {
             this.projects = this.$store.state.projects;
         }
@@ -66,7 +66,7 @@
         }
 
         private openNewProject(): void {
-            this.$router.push({ path: `/project` })
+            this.$router.push({ name: 'projectPage', params: {id: 'new'}});
         }
     }
 

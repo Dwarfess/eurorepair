@@ -33,10 +33,13 @@
           </sui-form-fields>
         </sui-form>
       </sui-modal-content>
-      <sui-modal-actions>
+      <div is="sui-button-group">
         <sui-button color="teal" @click.native="applyChanges">Ok</sui-button>
+        <sui-button-or/>
         <sui-button color="yellow" @click.native="cancelChanges">Cancel</sui-button>
-      </sui-modal-actions>
+        <sui-button-or/>
+        <sui-button @click.native="deleteChanges" :disabled="category === 'mainParam' || !editorParams.id">Delete</sui-button>
+      </div>
     </sui-modal>
   </section>
 
@@ -100,11 +103,24 @@
         }
 
         private getCategory(category): ProjectItem[] {
-            return this.$store.state.projectParams[`${category}s`];
+            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id
+                || project._tempId);
+
+            return currentProject[`${category}s`];
         }
 
         private cancelChanges(): void {
             this.createCloneParams();
+            this.toggleEditor();
+        }
+
+        private deleteChanges() {
+            const category = this.getCategory(this.params.category);
+            const index = category.map((item) => item.id).indexOf(this.editorParams.id);
+
+            category.splice(index, 1);
+
+            this.editorParams = this.resetParams();
             this.toggleEditor();
         }
 
@@ -129,9 +145,9 @@
 <style scoped lang="scss">
   .add-information {
     /deep/ .ui.standard.modal {
-      width: 200px !important;
+      width: 258px !important;
 
-      .content {
+      .content, .buttons {
         padding: 10px;
 
         .fields {

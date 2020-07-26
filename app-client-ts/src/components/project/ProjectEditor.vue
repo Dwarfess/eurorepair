@@ -3,42 +3,46 @@
   <section class="project-editor">
     <h2>Information</h2>
 
-    <div class="project_params" v-for="category in projectParams">
-      <div class="sectors" v-if="Array.isArray(category)" v-for="room in category" :key="room.id">
-        <div class="sector_params">
-          <sui-accordion>
-            <sui-accordion-title>
-              <h3 v-if="room.category !== 'mainParam'">
-                <span class="category">{{room.category}}</span> - {{room.name}}
-                <sui-icon name="dropdown"/>
-              </h3>
-              <h3 v-else>Main Params
-                <sui-icon name="dropdown"/>
-              </h3>
+    <span v-if="projectParams.mainParams">
+      <div class="project_params" v-for="category in projectParams">
+        <div v-if="Array.isArray(category)">
+          <div class="sectors" v-for="room in category" :key="room.id">
+            <div class="sector_params">
+              <sui-accordion>
+                <sui-accordion-title>
+                  <h3 v-if="room.category !== 'mainParam'">
+                    <span class="category">{{room.category}}</span> - {{room.name}}
+                    <sui-icon name="dropdown"/>
+                  </h3>
+                  <h3 v-else>Main Params
+                    <sui-icon name="dropdown"/>
+                  </h3>
 
-              <div class="add_edit_information_wrapper">
-                <EditInformation :params="room"></EditInformation>
-              </div>
-            </sui-accordion-title>
+                  <div class="add_edit_information_wrapper">
+                    <EditInformation :params="room"></EditInformation>
+                  </div>
+                </sui-accordion-title>
 
-            <sui-accordion-content>
-              <div class="length param">
-                <span class="param_title">Length: </span>
-                <span class="param_value">{{room.length}}</span>
-              </div>
-              <div class="width param">
-                <span class="param_title">Width: </span>
-                <span class="param_value">{{room.width}}</span>
-              </div>
-              <div class="height param">
-                <span class="param_title">Height: </span>
-                <span class="param_value">{{room.height}}</span>
-              </div>
-            </sui-accordion-content>
-          </sui-accordion>
+                <sui-accordion-content>
+                  <div class="length param">
+                    <span class="param_title">Length: </span>
+                    <span class="param_value">{{room.length}}</span>
+                  </div>
+                  <div class="width param">
+                    <span class="param_title">Width: </span>
+                    <span class="param_value">{{room.width}}</span>
+                  </div>
+                  <div class="height param">
+                    <span class="param_title">Height: </span>
+                    <span class="param_value">{{room.height}}</span>
+                  </div>
+                </sui-accordion-content>
+              </sui-accordion>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </span>
 
     <div class="add_edit_information_wrapper ">
       <EditInformation :params="{}"></EditInformation>
@@ -48,9 +52,9 @@
 </template>
 
 <script lang="ts">
-    import { Vue, Component, Watch, Model } from 'vue-property-decorator';
+    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    import  {Project } from '@/components/Types';
+    import {Project} from '@/components/Types';
     import EditInformation from '@/components/project/EditInformation.vue';
 
     @Component({
@@ -59,21 +63,18 @@
         },
         directives: {}
     })
-    export default class ProjectPage extends Vue {
-        private projectParams: Project;
+    export default class ProjectEditor extends Vue {
+        private projectParams: Project = {};
 
-        beforeCreate(): void {
-            this.projectParams = undefined;
-            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id);
+        created(): void {
+            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id
+                || project._tempId);
+
             if (currentProject) {
                 this.projectParams = currentProject;
             } else {
                 this.projectParams = this.$store.state.projectParams;
             }
-        }
-
-        created(): void {
-            console.log('editor', this.projectParams)
         }
     }
 </script>
