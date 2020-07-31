@@ -49,7 +49,7 @@ export default new Vuex.Store({
         // projectParams: test,
         newProject: {
             _tempId: Math.trunc(new Date().getTime() * Math.random()),
-            created: new Date().getTime(),
+            date: new Date().getTime(),
             image: 'require("../assets/img/body.jpg")',
             active: false,
             mainParams: [

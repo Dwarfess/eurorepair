@@ -32,7 +32,7 @@ exports.updateProject = function(req, res) {
         {
             $set: {
                 _id: req.body._id,
-                created: req.body.created,
+                date: req.body.date,
                 mainParams: req.body.mainParams,
                 rooms: req.body.rooms,
                 kitchens: req.body.kitchens,

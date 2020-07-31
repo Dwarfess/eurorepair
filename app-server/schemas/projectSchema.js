@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise;
 
 //setting the schema
 const projectSchema = new Schema({
-    created: Number,
+    date: Number,
     image: String,
     active: Boolean,
     mainParams: Object,

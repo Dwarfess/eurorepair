@@ -14,7 +14,7 @@
         </sui-dimmer-dimmable>
         <sui-card-content>
           <sui-card-header>{{slide.mainParams[0].name}}</sui-card-header>
-          <sui-card-meta>Created {{slide.created | dateConverter | dateFormat('DD/MM/YYYY')}}</sui-card-meta>
+          <sui-card-meta>Created {{slide.date | dateConverter | dateFormat('DD/MM/YYYY')}}</sui-card-meta>
         </sui-card-content>
       </sui-card>
     </sui-card-group>
