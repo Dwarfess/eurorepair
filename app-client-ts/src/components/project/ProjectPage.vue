@@ -11,9 +11,9 @@
           </div>
         </div>
         <div class="project_article_canvas">
-
+          <ProjectLayout :project-params="projectParams"></ProjectLayout>
         </div>
-        <ProjectEditor></ProjectEditor>
+        <ProjectEditor :project-params="projectParams"></ProjectEditor>
       </div>
 
       <div class="project_footer" v-if="projectParams.mainParams">
@@ -44,11 +44,13 @@
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    import ProjectEditor from './ProjectEditor.vue';
-    import {Project} from '../Types';
+    import ProjectEditor from '@/components/project/ProjectEditor.vue';
+    import {Project} from '@/components/Types';
+    import ProjectLayout from "@/components/project/ProjectLayout.vue";
 
     @Component({
         components: {
+            ProjectLayout,
             ProjectEditor
         },
         directives: {}
@@ -145,7 +147,10 @@
         height: 90%;
         border: 2px solid $mainColor;
         border-radius: 5px;
+        padding: 5px;
         float: left;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0) 50%, $defaultColor 55%, rgba(0, 0, 0, 0) 60% );
+        background-size: 0.5em 0.5em;
       }
     }
 

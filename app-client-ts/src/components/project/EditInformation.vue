@@ -18,16 +18,19 @@
               <label>Name: </label>
               <input type="text" v-model='editorParams.name' placeholder="Name" min="0" required/>
             </sui-form-field>
+
             <sui-form-field>
-              <label>Length: </label>
-              <input type="number" v-model='editorParams.length' placeholder="Length" min="1" required/>
-            </sui-form-field>
-            <sui-form-field>
-              <label>Width: </label>
+              <label>Width, cm: </label>
               <input type="number" v-model='editorParams.width' placeholder="Width" min="1" required/>
             </sui-form-field>
+
             <sui-form-field>
-              <label>Height: </label>
+              <label>Length, cm: </label>
+              <input type="number" v-model='editorParams.length' placeholder="Length" min="1" required/>
+            </sui-form-field>
+
+            <sui-form-field>
+              <label>Height, cm: </label>
               <input type="number" v-model='editorParams.height' placeholder="Height" min="1" required/>
             </sui-form-field>
           </sui-form-fields>
@@ -47,6 +50,7 @@
 
 <script lang="ts">
     import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
+
     import $ from 'jquery';
 
     import {ProjectItem, Category} from '@/components/Types';

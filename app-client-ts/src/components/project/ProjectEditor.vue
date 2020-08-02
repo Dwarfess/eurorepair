@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
 
     import {Project} from '@/components/Types';
     import EditInformation from '@/components/project/EditInformation.vue';
@@ -64,18 +64,7 @@
         directives: {}
     })
     export default class ProjectEditor extends Vue {
-        private projectParams: Project = {};
-
-        created(): void {
-            const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id
-                || project._tempId);
-
-            if (currentProject) {
-                this.projectParams = currentProject;
-            } else {
-                this.projectParams = this.$store.state.projectParams;
-            }
-        }
+        @Prop() private readonly projectParams: Project;
     }
 </script>
 
