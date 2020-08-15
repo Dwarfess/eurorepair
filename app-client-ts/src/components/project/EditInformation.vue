@@ -87,9 +87,9 @@
 
                 category[index].name = this.editorParams.name;
                 category[index].category = this.editorParams.category;
-                category[index].length = this.editorParams.length;
-                category[index].width = this.editorParams.width;
-                category[index].height = this.editorParams.height;
+                category[index].length = Number(this.editorParams.length);
+                category[index].width = Number(this.editorParams.width);
+                category[index].height = Number(this.editorParams.height);
             } else if (id) {
                 const oldCategory = this.getCategory(this.params.category);
                 const index = oldCategory.map((item) => item.id).indexOf(id);

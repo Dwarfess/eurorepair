@@ -1,31 +1,42 @@
 <template lang="html">
 
   <section class="project-layout">
-
+    <ProjectLayoutItem v-for="room of rooms"
+                       :room='room'
+                       :projectLayoutWidth="projectLayoutWidth"
+                       :projectLayoutHeight="projectLayoutHeight"
+                       :key="room.id">
+    </ProjectLayoutItem>
   </section>
 
 </template>
 
 <script lang="ts">
     import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
+    import VueDragResize from 'vue-drag-resize';
     import $ from 'jquery';
 
+    import ProjectLayoutItem from "@/components/project/ProjectLayoutItem.vue";
     import {Project, ProjectItem} from '@/components/Types';
 
     @Component({
-        components: {},
+        components: {ProjectLayoutItem},
         directives: {}
     })
     export default class ProjectLayout extends Vue {
         @Prop() private readonly projectParams: Project;
 
         private mainParams: ProjectItem = this.projectParams.mainParams[0];
+        private rooms: any[] = [];
         private calcPercent: number = 0;
+
+        private projectLayoutWidth: number = 0;
+        private projectLayoutHeight: number = 0;
 
         @Watch('projectParams', {immediate: true, deep: true})
         private watchMainParams() {
             this.resizeLayout();
-            this.drawRooms();
+            // this.drawRooms();
         }
 
         private resizeLayout(): void {
@@ -37,7 +48,10 @@
             $('.project-layout').css({
                 'width': `${parseFloat(this.calcPercent * width).toFixed(2)}%`,
                 'height': `${parseFloat(this.calcPercent * length).toFixed(2)}%`
-            }).empty();
+            });
+
+            this.projectLayoutWidth = $('.project-layout').width();
+            this.projectLayoutHeight = $('.project-layout').height();
         }
 
         private drawRooms() {
@@ -45,21 +59,26 @@
                 if (Array.isArray(category) && category.length) {
                     if (category[0].category !== 'mainParam') {
                         category.forEach((room) => {
-                            const currentId = `room${room.id}`;
-                            $('<div/>', {
-                                id: currentId,
-                                class: 'room',
-                                title: `${room.id}`
-                            }).appendTo('.project-layout');
+                            const dragAndDropParams = {
+                                id: room.id,
+                                width: this.percentConverter(this.projectLayoutWidth, room.width),
+                                height: this.percentConverter(this.projectLayoutHeight, room.length),
+                                top: (room.dragAndDropParams && room.dragAndDropParams.top) || 0,
+                                left: (room.dragAndDropParams && room.dragAndDropParams.left) || 0,
+                                name: room.name
+                            };
 
-                            $(`#${currentId}`).css({
-                                'width': `${parseFloat(this.calcPercent * room.width).toFixed(2)}%`,
-                                'height': `${parseFloat(this.calcPercent * room.length).toFixed(2)}%`
-                            }).text(`${room.name}`);
+                            room.dragAndDropParams = dragAndDropParams;
+
+                            this.rooms.push(dragAndDropParams);
                         });
                     }
                 }
             }
+        }
+
+        private percentConverter(projectLayoutParam: number, roomParam: number) {
+            return Number(parseFloat(projectLayoutParam * ((this.calcPercent * roomParam) / 100)).toFixed(0))
         }
 
         mounted(): void {
@@ -76,6 +95,7 @@
     background: $subBgColor;
     border: 2px solid $mainColor;
     border-radius: 2px;
+    position: relative;
 
     .room {
       display: inline-block;
