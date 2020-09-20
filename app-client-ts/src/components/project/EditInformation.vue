@@ -82,7 +82,7 @@
             const category = this.getCategory(this.editorParams.category);
             const id = this.editorParams.id;
 
-            if (this.editorParams.category === this.params.category) {
+            if (this.editorParams.category === this.params.category) { //in case of change params without category
                 const index = category.map((item) => item.id).indexOf(id);
 
                 category[index].name = this.editorParams.name;
@@ -90,13 +90,17 @@
                 category[index].length = Number(this.editorParams.length);
                 category[index].width = Number(this.editorParams.width);
                 category[index].height = Number(this.editorParams.height);
-            } else if (id) {
+
+                category[index].dragAndDropParams.editable = true;
+            } else if (id) { //in case of change params category
                 const oldCategory = this.getCategory(this.params.category);
                 const index = oldCategory.map((item) => item.id).indexOf(id);
 
+                this.editorParams.dragAndDropParams.editable = true;
+
                 oldCategory.splice(index, 1);
                 category.push(this.editorParams);
-            } else {
+            } else { // in case of new room
                 this.editorParams.id = Math.trunc(new Date().getTime() * Math.random());
 
                 category.push(this.editorParams);

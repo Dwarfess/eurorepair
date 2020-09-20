@@ -5,7 +5,8 @@ export interface ProjectItem {
     category: string,
     length: number,
     width: number,
-    height: number
+    height: number,
+    dragAndDropParams: dragAndDropParams
 }
 
 export interface Project {
@@ -25,4 +26,12 @@ export interface Project {
 export interface Category {
     text: string,
     value: string
+}
+
+export interface dragAndDropParams {
+    width: number,
+    height: number,
+    top: number,
+    left: number,
+    editable: boolean
 }

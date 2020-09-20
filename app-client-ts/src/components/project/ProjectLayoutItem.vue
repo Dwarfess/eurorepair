@@ -2,8 +2,8 @@
 
   <section class="project-layout-item">
     <VueDragResize
-            :parentW="projectLayoutWidth"
-            :parentH="projectLayoutHeight"
+            :parentW="projectLayoutWidth - borderWidth"
+            :parentH="projectLayoutHeight - borderWidth"
             :isDraggable="true"
             :parentLimitation="true"
             :preventActiveBehavior="false"
@@ -36,8 +36,11 @@
     })
     export default class ProjectLayoutItem extends Vue {
         @Prop() private room: object;
+        @Prop() private recalculateRoomsParamsInPercentParent: any;
         @Prop() private projectLayoutWidth: number;
         @Prop() private projectLayoutHeight: number;
+
+        private borderWidth: number = 8;
 
         private width: number = 0;
         private height: number = 0;
@@ -45,6 +48,7 @@
         private left: number = 0;
 
         private resize(newRect) {
+            this.recalculateRoomsParamsInPercentParent(this.room.id, newRect);
             this.room.width = newRect.width;
             this.room.height = newRect.height;
             this.room.top = newRect.top;
