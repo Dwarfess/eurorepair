@@ -190,18 +190,5 @@
     border: 2px solid $mainColor;
     border-radius: 2px;
     position: relative;
-
-    .room {
-      display: inline-block;
-      float: left;
-      border: 1px solid white;
-      margin: 2px;
-      color: white;
-      font-size: 15px;
-      font-weight: bolder;
-      text-align: center;
-      vertical-align: center;
-      text-shadow: 0 0 1px black;
-    }
   }
 </style>

@@ -6,7 +6,7 @@ export interface ProjectItem {
     length: number,
     width: number,
     height: number,
-    dragAndDropParams: dragAndDropParams
+    dragAndDropParams?: dragAndDropParams
 }
 
 export interface Project {
@@ -33,5 +33,5 @@ export interface dragAndDropParams {
     height: number,
     top: number,
     left: number,
-    editable: boolean
+    editable: boolean,
 }

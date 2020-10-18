@@ -15,9 +15,12 @@
             v-on:resizing="resize"
             v-on:dragging="resize"
             :contentClass="'room'"
-            v-on:activated="activateEv(1)"
-            v-on:deactivated="deactivateEv(2)">
-      <h3>{{room.name}}</h3>
+            :id="`room${room.id}`"
+            v-on:activated="toggleRoomClass(true)"
+            v-on:deactivated="toggleRoomClass(false)">
+      <div class="room">
+        <h3>{{room.name}}</h3>
+      </div>
     </VueDragResize>
   </section>
 
@@ -40,7 +43,7 @@
         @Prop() private projectLayoutWidth: number;
         @Prop() private projectLayoutHeight: number;
 
-        private borderWidth: number = 8;
+        private borderWidth: number = 3;
 
         private width: number = 0;
         private height: number = 0;
@@ -55,18 +58,41 @@
             this.room.left = newRect.left;
         }
 
-        private activateEv(index): void {
-            console.log(index)
+        private toggleRoomClass(state): void {
+            $(`#room${this.room.id}`).toggleClass('active', state);
+            $(`#room${this.room.id}`).toggleClass('inactive', !state);
         }
 
-        private deactivateEv(index): void {
-            console.log(index)
+        mounted(): void {
+            this.toggleRoomClass(false);
         }
     }
 </script>
 
 <style scoped lang="scss">
-  .project-layout-item {
+  @import '../../variables';
 
+  .project-layout-item {
+    .vdr {
+      display: flex;
+
+      .room {
+        background: $subBgColor;
+        flex: auto;
+        border: 1px solid white;
+        margin: 3px;
+        color: white;
+        font-size: 15px;
+        font-weight: bolder;
+        text-align: center;
+        vertical-align: center;
+        text-shadow: 0 0 1px black;
+      }
+    }
+
+    .active {
+      box-shadow: black 5px 5px 15px 0px;
+      z-index:999 !important;
+    }
   }
 </style>

@@ -91,7 +91,9 @@
                 category[index].width = Number(this.editorParams.width);
                 category[index].height = Number(this.editorParams.height);
 
-                category[index].dragAndDropParams.editable = true;
+                if(category[index].dragAndDropParams) {
+                    category[index].dragAndDropParams.editable = true;
+                }
             } else if (id) { //in case of change params category
                 const oldCategory = this.getCategory(this.params.category);
                 const index = oldCategory.map((item) => item.id).indexOf(id);
