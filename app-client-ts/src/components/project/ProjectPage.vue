@@ -27,15 +27,15 @@
       </div>
 
       <sui-modal v-model="showDeletionConfirmationDialog">
-      <sui-modal-content>
-        <p>Are you sure you want to delete <b>{{projectParams.mainParams[0].name}}</b> project?</p>
-      </sui-modal-content>
-      <div is="sui-button-group">
-        <sui-button color="teal" @click.native="deleteProject">Confirm</sui-button>
-        <sui-button-or/>
-        <sui-button color="yellow" @click.native="cancelToDeleteProject">Cancel</sui-button>
-      </div>
-    </sui-modal>
+        <sui-modal-content>
+          <p>Are you sure you want to delete <b>{{projectParams.mainParams[0].name}}</b> project?</p>
+        </sui-modal-content>
+        <div is="sui-button-group">
+          <sui-button color="teal" @click.native="deleteProject">Confirm</sui-button>
+          <sui-button-or/>
+          <sui-button color="yellow" @click.native="cancelToDeleteProject">Cancel</sui-button>
+        </div>
+      </sui-modal>
     </span>
   </section>
 

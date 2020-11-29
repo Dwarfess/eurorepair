@@ -19,7 +19,7 @@
             v-on:activated="toggleRoomClass(true)"
             v-on:deactivated="toggleRoomClass(false)">
       <div class="room">
-        <h3>{{room.name}}</h3>
+        <h3 @click="openSelectedRoom(room.id)">{{room.name}}</h3>
       </div>
     </VueDragResize>
   </section>
@@ -31,14 +31,15 @@
     import VueDragResize from 'vue-drag-resize';
     import $ from 'jquery';
 
-    import {Project, ProjectItem} from '@/components/Types';
+    import {Project, Room} from '@/components/Types';
 
     @Component({
         components: {VueDragResize},
         directives: {}
     })
     export default class ProjectLayoutItem extends Vue {
-        @Prop() private room: object;
+        @Prop() private projectParams: Project;
+        @Prop() private room: Room;
         @Prop() private recalculateRoomsParamsInPercentParent: any;
         @Prop() private projectLayoutWidth: number;
         @Prop() private projectLayoutHeight: number;
@@ -61,6 +62,23 @@
         private toggleRoomClass(state): void {
             $(`#room${this.room.id}`).toggleClass('active', state);
             $(`#room${this.room.id}`).toggleClass('inactive', !state);
+        }
+
+        private openSelectedRoom(roomId) {
+            this.saveProject(roomId);
+        }
+
+        private saveProject(roomId) {
+            const id = this.$route.params.id;
+
+            let saveMethod;
+            if (id !== 'new') {
+                saveMethod = this.$store.dispatch('SAVE_PROJECT', this.projectParams);
+            } else {
+                saveMethod = this.$store.dispatch('CREATE_PROJECT', this.projectParams);
+            }
+
+            saveMethod.then(() => this.$router.push({ name: 'roomPage', params: {id, roomId}}));
         }
 
         mounted(): void {
@@ -87,6 +105,14 @@
         text-align: center;
         vertical-align: center;
         text-shadow: 0 0 1px black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h3 {
+          padding: 10px 0;
+          cursor: pointer;
+        }
       }
     }
 

@@ -1,5 +1,5 @@
 
-export interface ProjectItem {
+export interface Room {
     id: number,
     name: any,
     category: string,
@@ -15,12 +15,12 @@ export interface Project {
     date: string,
     image: string,
     active: boolean,
-    mainParams: ProjectItem[],
-    rooms: ProjectItem[],
-    kitchens: ProjectItem[],
-    restrooms: ProjectItem[],
-    bathrooms: ProjectItem[],
-    hallways: ProjectItem[]
+    mainParams: Room[],
+    rooms: Room[],
+    kitchens: Room[],
+    restrooms: Room[],
+    bathrooms: Room[],
+    hallways: Room[]
 }
 
 export interface Category {

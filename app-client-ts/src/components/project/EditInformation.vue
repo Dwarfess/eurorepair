@@ -53,16 +53,16 @@
 
     import $ from 'jquery';
 
-    import {ProjectItem, Category} from '@/components/Types';
+    import {Room, Category} from '@/components/Types';
 
     @Component({
         components: {},
         directives: {}
     })
     export default class EditInformation extends Vue {
-        @Prop() private readonly params: ProjectItem;
+        @Prop() private readonly params: Room;
 
-        private editorParams: ProjectItem;
+        private editorParams: Room;
         private openEditor: boolean = false;
         private category: string = 'room';
         private readonly categories: Category[] = this.$store.state.categories;
@@ -112,7 +112,7 @@
             this.toggleEditor();
         }
 
-        private getCategory(category): ProjectItem[] {
+        private getCategory(category): Room[] {
             const currentProject = this.$store.state.projects.find((project) => project._id === this.$route.params.id
                 || project._tempId);
 
@@ -138,7 +138,7 @@
             this.editorParams = this.params.id ? Object.assign({}, this.params) : this.resetParams();
         }
 
-        private resetParams(): ProjectItem {
+        private resetParams(): Room {
             this.category = 'room';
             return {
                 id: 0,

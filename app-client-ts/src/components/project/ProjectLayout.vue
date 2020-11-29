@@ -3,6 +3,7 @@
   <section class="project_layout">
     <ProjectLayoutItem v-for="room of rooms"
                        :room='room'
+                       :projectParams="projectParams"
                        :recalculateRoomsParamsInPercentParent='recalculateRoomsParamsInPercent'
                        :projectLayoutWidth="projectLayoutWidth"
                        :projectLayoutHeight="projectLayoutHeight"
@@ -18,7 +19,7 @@
     import $ from 'jquery';
 
     import ProjectLayoutItem from "@/components/project/ProjectLayoutItem.vue";
-    import {Project, ProjectItem} from '@/components/Types';
+    import {Project, Room} from '@/components/Types';
 
     @Component({
         components: {ProjectLayoutItem},
@@ -27,7 +28,7 @@
     export default class ProjectLayout extends Vue {
         @Prop() private projectParams: Project;
 
-        private mainParams: ProjectItem = this.projectParams.mainParams[0];
+        private mainParams: Room = this.projectParams.mainParams[0];
         private rooms: any[] = [];
 
         private percentsInOneScaleUnit: number = 0;
