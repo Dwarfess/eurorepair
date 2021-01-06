@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@types/jquery": "^3.3.38",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "konva": "^7.0.4",
     "portal-vue": "2.1.6",
