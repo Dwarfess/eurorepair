@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const dbURI = 'mongodb://nodejs:999999999_z@ds261136.mlab.com:61136/eurorepair';
+const dbURI = 'mongodb+srv://NodeJS:999999999_z@cluster0.fioq5.mongodb.net/eurorepair?retryWrites=true&w=majority';
+// const dbURI = 'mongodb://nodejs:999999999_z@ds261136.mlab.com:61136/eurorepair';
 
 const options = {
     useUnifiedTopology: true,

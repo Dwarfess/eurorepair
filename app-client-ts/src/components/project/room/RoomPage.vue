@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="project_article_canvas">
-          <ProjectLayout :project-params="projectParams"></ProjectLayout>
+          <RoomLayout :roomParams="roomParams"></RoomLayout>
         </div>
 <!--        <ProjectEditor :project-params="projectParams"></ProjectEditor>-->
       </div>
@@ -46,11 +46,11 @@
 
     import ProjectEditor from '@/components/project/ProjectEditor.vue';
     import {Project, Room} from '@/components/Types';
-    import ProjectLayout from "@/components/project/ProjectLayout.vue";
+    import RoomLayout from "@/components/project/room/RoomLayout.vue";
 
     @Component({
         components: {
-            ProjectLayout,
+            RoomLayout,
             ProjectEditor
         },
         directives: {}
