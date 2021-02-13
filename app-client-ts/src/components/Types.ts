@@ -35,3 +35,9 @@ export interface dragAndDropParams {
     left: number,
     editable: boolean,
 }
+
+export interface sideParams {
+    name: string,
+    width: number,
+    height: number
+}

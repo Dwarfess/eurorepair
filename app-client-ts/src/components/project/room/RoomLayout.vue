@@ -1,7 +1,7 @@
 <template lang="html">
 
   <section class="room_layout">
-    <RoomSketch :roomParams="roomParams"></RoomSketch>
+    <RoomSketch1 :roomParams="roomParams"></RoomSketch1>
   </section>
 
 </template>
@@ -11,10 +11,10 @@
     import $ from 'jquery';
 
     import {Project, Room} from '@/components/Types';
-    import RoomSketch from "@/components/project/room/RoomSketch.vue";
+    import RoomSketch1 from "@/components/project/room/RoomSketch1.vue";
 
     @Component({
-        components: {RoomSketch},
+        components: {RoomSketch1},
         directives: {}
     })
     export default class RoomLayout extends Vue {

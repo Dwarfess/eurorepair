@@ -2,7 +2,7 @@
 
   <section class="room_sketch">
     <div class="wall_container left_side">
-      <div class="wall_container_item"></div>
+      <div class="wall_container_item" @focus="e => e.target.classList.toggle('active')" tabindex="0"></div>
     </div>
 
     <div class="wall_container wall_container_center">
@@ -37,6 +37,10 @@
 
         mounted() {
             this.calculateSketch();
+        }
+
+        created(): void {
+            window.addEventListener('resize', this.calculateSketch);
         }
 
         private calculateSketch() {
@@ -161,6 +165,10 @@
 
         private unitToPercentConverter(roomParam: number) {
             return Number(parseFloat(this.percentsInOneScaleUnit * Number(roomParam)).toFixed(0));
+        }
+
+        destroyed(): void {
+            window.removeEventListener('resize', this.calculateSketch);
         }
 
     }
