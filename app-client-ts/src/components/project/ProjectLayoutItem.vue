@@ -7,19 +7,20 @@
             :isDraggable="true"
             :parentLimitation="true"
             :preventActiveBehavior="false"
-            :isActive="true"
+            :isActive="false"
             :aspectRatio="false"
             :stickSize="5"
             :w="room.width" :h="room.height"
             :x="room.left" :y="room.top"
-            v-on:resizing="resize"
-            v-on:dragging="resize"
+            @resizing="resize"
+            @dragging="resize"
             :contentClass="'room'"
             :id="`room${room.id}`"
-            v-on:activated="toggleRoomClass(true)"
-            v-on:deactivated="toggleRoomClass(false)">
+            @click="toggleRoomClass(true)"
+            @deactivated="toggleRoomClass(false)">
       <div class="room">
-        <h3 @click="openSelectedRoom(room.id)">{{room.name}}</h3>
+        <h3>{{room.name}}</h3>
+        <sui-button size="large" inverted @click="openSelectedRoom(room.id)">{{room.name}}</sui-button>
       </div>
     </VueDragResize>
   </section>
@@ -60,8 +61,8 @@
         }
 
         private toggleRoomClass(state): void {
-            $(`#room${this.room.id}`).toggleClass('active', state);
             $(`#room${this.room.id}`).toggleClass('inactive', !state);
+            $(`#room${this.room.id}`).toggleClass('active', state);
         }
 
         private openSelectedRoom(roomId) {
@@ -97,7 +98,7 @@
       .room {
         background: $subBgColor;
         flex: auto;
-        border: 1px solid white;
+        border: 2px solid white;
         margin: 3px;
         color: white;
         font-size: 15px;
@@ -108,17 +109,36 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0) 80%, #e0e1e2 100%, rgba(0, 0, 0, 0) 100%);
+        background-size: 0.5em 0.5em;
 
         h3 {
           padding: 10px 0;
-          cursor: pointer;
+          margin: 0;
+          font-size: 16px;
+        }
+
+        button {
+          display: none;
+          position: absolute;
         }
       }
     }
 
     .active {
-      box-shadow: black 5px 5px 15px 0px;
+      box-shadow: 0px 0px 20px 5px black;
       z-index:999 !important;
+
+      &.room {
+        h3 {
+          display: none;
+        }
+
+        button {
+          display: block;
+          box-shadow: 0px 0px 20px 5px black;
+        }
+      }
     }
   }
 </style>

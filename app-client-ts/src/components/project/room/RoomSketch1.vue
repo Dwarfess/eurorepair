@@ -2,7 +2,7 @@
 
   <section class="room_sketch" v-if="sidesParams.length">
     <div class="wall_container" v-for="(side, index) in sidesParams" :class="side.name" :key="index">
-      <div class="wall_container_item"></div>
+      <div class="wall_container_item" tabindex="0"></div>
     </div>
   </section>
 
@@ -107,42 +107,6 @@
                 const selector = $(`.${side.name}`);
                 this.calculateSides(selector, side.width, side.height, calcWidth, calcLength);
             });
-
-            // const $leftSideBlock = $('.left_side');
-            // const $frontSideBlock = $('.front_side');
-            // const $bottomSideBlock = $('.bottom_side');
-            // const $backSideBlock = $('.back_side');
-            // const $rightSideBlock = $('.right_side');
-            // const $topSideBlock = $('.top_side');
-            //
-            // const $wallContainerBlock = $('.wall_container');
-            // const $wallContainerCenterBlock = $('.wall_container_center');
-
-            // this.calculateSides($leftSideBlock, height, length, calcWidth, calcLength);
-            // this.calculateSides($frontSideBlock, length, height, calcWidth, calcLength);
-            // this.calculateSides($bottomSideBlock, width, length, calcWidth, calcLength);
-            // this.calculateSides($backSideBlock, length, height, calcWidth, calcLength);
-            // this.calculateSides($rightSideBlock, height, length, calcWidth, calcLength);
-            // this.calculateSides($topSideBlock, width, length, calcWidth, calcLength);
-
-            //all of wall_container must be the same height
-            // this.calculateSidesTest($wallContainerBlock, length, calcLength, 'height');
-            //
-            // this.calculateSidesTest($leftSideBlock, height, calcWidth, 'width');
-            // this.calculateSidesTest($rightSideBlock, height, calcWidth, 'width');
-            // this.calculateSidesTest($topSideBlock, width, calcWidth, 'width');
-            //
-            // //wall_container_center height must be 100%
-            // this.calculateSidesTest($wallContainerCenterBlock, calcLength, calcLength, 'height');
-            // this.calculateSidesTest($wallContainerCenterBlock, width, calcWidth, 'width');
-            //
-            // this.calculateSidesTest($frontSideBlock, height, calcLength, 'height');
-            // this.calculateSidesTest($bottomSideBlock, length, calcLength, 'height');
-            // this.calculateSidesTest($backSideBlock, height, calcLength, 'height');
-
-
-
-
         }
 
         private resizeLayout(width, length): void {
@@ -180,15 +144,6 @@
                 'width': `${parseFloat(calcWidth).toFixed(0)}px`,
                 'height': `${parseFloat(calcLength).toFixed(0)}px`
             });
-            //
-            // this.projectLayoutWidth = calcWidth;
-            // this.projectLayoutHeight = calcLength;
-            //
-            // // scale one point
-            // this.percentsInOneScaleUnit = width > length ? 100 / width : 100 / length;
-            //
-            // // how much pixels in one percent
-            // this.pixelsInOnePercent = calcWidth > calcLength ? calcWidth / 100 : calcLength / 100;
         }
 
         private calculateSides(selector, width, length, calcWidth, calcLength) {
@@ -196,25 +151,6 @@
                 'width': `${parseFloat((width/calcWidth) * 100).toFixed(1)}%`,
                 'height': `${parseFloat((length/calcLength) * 100).toFixed(1)}%`
             });
-        }
-
-        private calculateSidesTest(selector, side, generalSide, param) {
-            const params = {};
-            params[param] = `${parseFloat((side/generalSide) * 100).toFixed(1)}%`
-
-            selector.css(params);
-        }
-
-        private pixelToPercentConverter(roomParam: number) {
-            return Number(parseFloat(roomParam / this.pixelsInOnePercent).toFixed(1));
-        }
-
-        private percentToPixelConverter(roomParam: number) {
-            return Number(parseFloat(roomParam * this.pixelsInOnePercent).toFixed(1));
-        }
-
-        private unitToPercentConverter(roomParam: number) {
-            return Number(parseFloat(this.percentsInOneScaleUnit * Number(roomParam)).toFixed(0));
         }
 
         destroyed(): void {
@@ -245,6 +181,14 @@
         border: 2px solid $mainColor;
         width: 100%;
         height: 100%;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0) 80%, #e0e1e2 100%, rgba(0, 0, 0, 0) 100%);
+        background-size: 0.5em 0.5em;
+
+        &:focus {
+          box-shadow: 0px 0px 20px 5px black;
+          border: 2px solid $mainColor;
+          outline: none;
+        }
       }
     }
     .left_front_side,
