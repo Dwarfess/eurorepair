@@ -1,32 +1,21 @@
 <template lang="html">
 
-  <section class="room_sketch">
-    <div class="wall_container left_side">
-      <div class="wall_container_item" @focus="e => e.target.classList.toggle('active')" tabindex="0"></div>
-    </div>
-
-    <div class="wall_container wall_container_center">
-      <div class="wall_container_item front_side"></div>
-      <div class="wall_container_item bottom_side"></div>
-      <div class="wall_container_item back_side"></div>
-    </div>
-
-    <div class="wall_container right_side">
-      <div class="wall_container_item"></div>
-    </div>
-
-    <div class="wall_container top_side">
-      <div class="wall_container_item"></div>
+  <section class="room_sketch" v-if="sidesParams.length">
+    <div class="side_container" v-for="(side, index) in sidesParams" :class="side.name" :key="index">
+      <div class="side_container_item" tabindex="0">
+        <h3>{{side.name}}</h3>
+        <sui-button size="large" inverted @click="openSelectedSide(side)">Open</sui-button>
+      </div>
     </div>
   </section>
 
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
+    import {Vue, Component, Prop} from 'vue-property-decorator';
     import $ from 'jquery';
 
-    import {Project, Room} from '@/components/Types';
+    import {Room, sideParams} from '@/components/Types';
 
     @Component({
         components: {},
@@ -35,12 +24,73 @@
     export default class RoomSketch extends Vue {
         @Prop() private roomParams: Room;
 
+        private sidesParams: sideParams[] = [];
+
         mounted() {
             this.calculateSketch();
         }
 
         created(): void {
+            this.fillSidesParams();
             window.addEventListener('resize', this.calculateSketch);
+        }
+
+        private fillSidesParams() {
+            const width = Number(this.roomParams.width);
+            const length = Number(this.roomParams.length);
+            const height = Number(this.roomParams.height);
+
+            this.sidesParams  = [
+                {
+                    name: 'left_front_side',
+                    width: height,
+                    height: height
+                }, {
+                    name: 'front_side',
+                    width: width,
+                    height: height
+                }, {
+                    name: 'right_front_side',
+                    width: height,
+                    height: height
+                }, {
+                    name: 'top_front_side',
+                    width: width,
+                    height: height
+                }, {
+                    name: 'left_side',
+                    width: height,
+                    height: length
+                }, {
+                    name: 'bottom_side',
+                    width: width,
+                    height: length
+                }, {
+                    name: 'right_side',
+                    width: height,
+                    height: length
+                }, {
+                    name: 'top_side',
+                    width: width,
+                    height: length
+                }, {
+                    name: 'left_back_side',
+                    width: height,
+                    height: height
+                }, {
+                    name: 'back_side',
+                    width: width,
+                    height: height
+                }, {
+                    name: 'right_back_side',
+                    width: height,
+                    height: height
+                }, {
+                    name: 'top_back_side',
+                    width: width,
+                    height: height
+                }
+            ]
         }
 
         private calculateSketch() {
@@ -48,51 +98,18 @@
             const length = Number(this.roomParams.length);
             const height = Number(this.roomParams.height);
 
-            const generalPadding = 4;
-
             // multiply width for top, bottom and height for left, right (because in case of left, right - width is height)
-            const calcWidth = (width * 2) + (height * 2) + generalPadding;
+            const calcWidth = (width * 2) + (height * 2);
 
             //add length and multiply height for front, back (because in case of front, back - width is height)
-            const calcLength = length + (height * 2) + generalPadding;
+            const calcLength = length + (height * 2);
 
             this.resizeLayout(calcWidth, calcLength);
 
-            const $leftSideBlock = $('.left_side');
-            const $frontSideBlock = $('.front_side');
-            const $bottomSideBlock = $('.bottom_side');
-            const $backSideBlock = $('.back_side');
-            const $rightSideBlock = $('.right_side');
-            const $topSideBlock = $('.top_side');
-
-            const $wallContainerBlock = $('.wall_container');
-            const $wallContainerCenterBlock = $('.wall_container_center');
-
-            // this.calculateSides($leftSideBlock, height, length, calcWidth, calcLength);
-            // this.calculateSides($frontSideBlock, length, height, calcWidth, calcLength);
-            // this.calculateSides($bottomSideBlock, width, length, calcWidth, calcLength);
-            // this.calculateSides($backSideBlock, length, height, calcWidth, calcLength);
-            // this.calculateSides($rightSideBlock, height, length, calcWidth, calcLength);
-            // this.calculateSides($topSideBlock, width, length, calcWidth, calcLength);
-
-            //all of wall_container must be the same height
-            this.calculateSidesTest($wallContainerBlock, length, calcLength, 'height');
-
-            this.calculateSidesTest($leftSideBlock, height, calcWidth, 'width');
-            this.calculateSidesTest($rightSideBlock, height, calcWidth, 'width');
-            this.calculateSidesTest($topSideBlock, width, calcWidth, 'width');
-
-            //wall_container_center height must be 100%
-            this.calculateSidesTest($wallContainerCenterBlock, calcLength, calcLength, 'height');
-            this.calculateSidesTest($wallContainerCenterBlock, width, calcWidth, 'width');
-
-            this.calculateSidesTest($frontSideBlock, height, calcLength, 'height');
-            this.calculateSidesTest($bottomSideBlock, length, calcLength, 'height');
-            this.calculateSidesTest($backSideBlock, height, calcLength, 'height');
-
-
-
-
+            this.sidesParams.forEach((side) => {
+                const selector = $(`.${side.name}`);
+                this.calculateSides(selector, side.width, side.height, calcWidth, calcLength);
+            });
         }
 
         private resizeLayout(width, length): void {
@@ -130,15 +147,6 @@
                 'width': `${parseFloat(calcWidth).toFixed(0)}px`,
                 'height': `${parseFloat(calcLength).toFixed(0)}px`
             });
-
-            this.projectLayoutWidth = calcWidth;
-            this.projectLayoutHeight = calcLength;
-
-            // scale one point
-            this.percentsInOneScaleUnit = width > length ? 100 / width : 100 / length;
-
-            // how much pixels in one percent
-            this.pixelsInOnePercent = calcWidth > calcLength ? calcWidth / 100 : calcLength / 100;
         }
 
         private calculateSides(selector, width, length, calcWidth, calcLength) {
@@ -148,29 +156,13 @@
             });
         }
 
-        private calculateSidesTest(selector, side, generalSide, param) {
-            const params = {};
-            params[param] = `${parseFloat((side/generalSide) * 100).toFixed(1)}%`
+        private openSelectedSide() {
 
-            selector.css(params);
-        }
-
-        private pixelToPercentConverter(roomParam: number) {
-            return Number(parseFloat(roomParam / this.pixelsInOnePercent).toFixed(1));
-        }
-
-        private percentToPixelConverter(roomParam: number) {
-            return Number(parseFloat(roomParam * this.pixelsInOnePercent).toFixed(1));
-        }
-
-        private unitToPercentConverter(roomParam: number) {
-            return Number(parseFloat(this.percentsInOneScaleUnit * Number(roomParam)).toFixed(0));
         }
 
         destroyed(): void {
             window.removeEventListener('resize', this.calculateSketch);
         }
-
     }
 </script>
 
@@ -178,27 +170,64 @@
   @import '../../../variables';
 
   .room_sketch {
-    display: flex;
-    flex-wrap: wrap;
     width: 100%;
     height: 100%;
     padding: 2px;
 
-    .wall_container {
-      flex-grow: 1;
+    .side_container {
       min-width: 5%;
       height: 50%;
-      margin: auto;
-
-      &_center {
-        height: 100%;
-      }
+      padding: 3px;
+      float: left;
 
       &_item {
         border: 2px solid $mainColor;
         width: 100%;
         height: 100%;
+        background: linear-gradient(45deg, rgba(0, 0, 0, 0) 80%, #e0e1e2 100%, rgba(0, 0, 0, 0) 100%);
+        background-size: 0.5em 0.5em;
+        color: $mainColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h3 {
+          padding: 10px 0;
+          margin: 0;
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding: 5px;
+        }
+
+        button {
+          display: none;
+          position: absolute;
+        }
+
+        &:focus {
+          box-shadow: 0px 0px 20px 5px black;
+          border: 2px solid $mainColor;
+          outline: none;
+
+          h3 {
+            display: none;
+          }
+
+          button {
+            display: block;
+            box-shadow: 0px 0px 20px 5px black;
+          }
+        }
       }
+    }
+    .left_front_side,
+    .right_front_side,
+    .top_front_side,
+    .left_back_side,
+    .right_back_side,
+    .top_back_side {
+      visibility: hidden;
     }
   }
 </style>

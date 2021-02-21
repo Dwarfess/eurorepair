@@ -1,24 +1,28 @@
 <template lang="html">
 
-  <section class="room_sketch" v-if="sidesParams.length">
-    <div class="wall_container" v-for="(side, index) in sidesParams" :class="side.name" :key="index">
-      <div class="wall_container_item" tabindex="0"></div>
+  <section class="room_layout" v-if="sidesParams.length">
+    <div class="room_container" v-for="(side, index) in sidesParams" :class="side.name" :key="index">
+      <div class="room_container_item" tabindex="0">
+        <h3>{{side.name}}</h3>
+        <sui-button size="large" inverted @click="openSelectedSide(side)">Open</sui-button>
+      </div>
     </div>
   </section>
 
 </template>
 
 <script lang="ts">
-    import {Vue, Component, Prop} from 'vue-property-decorator';
+    import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
     import $ from 'jquery';
 
-    import {Room, sideParams} from '@/components/Types';
+    import {Project, Room, sideParams} from '@/components/Types';
 
     @Component({
         components: {},
         directives: {}
     })
-    export default class RoomSketch extends Vue {
+    export default class RoomLayout extends Vue {
+
         @Prop() private roomParams: Room;
 
         private sidesParams: sideParams[] = [];
@@ -153,29 +157,33 @@
             });
         }
 
+        private openSelectedSide() {
+
+        }
+
         destroyed(): void {
             window.removeEventListener('resize', this.calculateSketch);
         }
     }
+
+
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   @import '../../../variables';
 
-  .room_sketch {
-    width: 100%;
-    height: 100%;
+  .room_layout {
+    background: $subBgColor;
+    border: 2px solid $mainColor;
+    border-radius: 2px;
+    position: relative;
     padding: 2px;
 
-    .wall_container {
+    .room_container {
       min-width: 5%;
       height: 50%;
       padding: 3px;
       float: left;
-
-      &_center {
-        height: 100%;
-      }
 
       &_item {
         border: 2px solid $mainColor;
@@ -183,11 +191,38 @@
         height: 100%;
         background: linear-gradient(45deg, rgba(0, 0, 0, 0) 80%, #e0e1e2 100%, rgba(0, 0, 0, 0) 100%);
         background-size: 0.5em 0.5em;
+        color: $mainColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h3 {
+          padding: 10px 0;
+          margin: 0;
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          padding: 5px;
+        }
+
+        button {
+          display: none;
+          position: absolute;
+        }
 
         &:focus {
           box-shadow: 0px 0px 20px 5px black;
           border: 2px solid $mainColor;
           outline: none;
+
+          h3 {
+            display: none;
+          }
+
+          button {
+            display: block;
+            box-shadow: 0px 0px 20px 5px black;
+          }
         }
       }
     }

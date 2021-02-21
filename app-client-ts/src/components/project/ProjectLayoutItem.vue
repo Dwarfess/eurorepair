@@ -20,7 +20,7 @@
             @deactivated="toggleRoomClass(false)">
       <div class="room">
         <h3>{{room.name}}</h3>
-        <sui-button size="large" inverted @click="openSelectedRoom(room.id)">{{room.name}}</sui-button>
+        <sui-button size="large" inverted @click="openSelectedRoom(room.id)">Open</sui-button>
       </div>
     </VueDragResize>
   </section>
@@ -100,7 +100,7 @@
         flex: auto;
         border: 2px solid white;
         margin: 3px;
-        color: white;
+        color: $mainColor;
         font-size: 15px;
         font-weight: bolder;
         text-align: center;
