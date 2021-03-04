@@ -1,17 +1,35 @@
 <template lang="html">
 
   <section class="project">
-    <span v-if="roomParams.id">
+    <span v-if="sideParams.name">
       <div class="project_article">
         <div class="project_article_name">
-          <div class="ui right labeled left icon input">
-            <i class="tags icon"></i>
-            <input type="text" placeholder="Enter name" :value="projectParams.mainParams[0].name" readonly>
-            <a class="ui tag label">edit</a>
+          <div class="ui mini steps">
+            <div class="step">
+              <i class="truck icon"></i>
+              <div class="content">
+                <div class="title">Shipping</div>
+                <div class="description">Choose your shipping options</div>
+              </div>
+            </div>
+            <div class="active step">
+              <i class="payment icon"></i>
+              <div class="content">
+                <div class="title">Billing</div>
+                <div class="description">Enter billing information</div>
+              </div>
+            </div>
+            <div class="disabled step">
+              <i class="info icon"></i>
+              <div class="content">
+                <div class="title">Confirm Order</div>
+                <div class="description">Verify order details</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="project_article_canvas">
-<!--          <SideLayout :roomParams="roomParams"></SideLayout>-->
+          <SideLayout :sideParams="sideParams"></SideLayout>
         </div>
 <!--        <ProjectEditor :project-params="projectParams"></ProjectEditor>-->
       </div>
@@ -44,23 +62,21 @@
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
 
-    import ProjectEditor from '@/components/project/ProjectEditor.vue';
-    import {Project, Room, sideParams} from '@/components/Types';
-    import SideLayout from "@/components/project/room/RoomLayout.vue";
+    import {Project, Room, Side} from '@/components/Types';
+    import SideLayout from "@/components/project/side/SideLayout.vue";
 
     @Component({
         components: {
-            SideLayout,
-            ProjectEditor
+            SideLayout
         },
         directives: {}
     })
-    export default class RoomPage extends Vue {
+    export default class SidePage extends Vue {
         // private showDeletionConfirmationDialog: boolean = false;
         private projectParams: Project = {};
         private roomParams: Room = {};
-        private sidesParams: sideParams[] = [];
-        private sideParams: sideParams = {};
+        private sidesParams: Side[] = [];
+        private sideParams: Side = {};
 
         @Watch('$store.state.projects')
         private watchProjectParams() {
@@ -105,16 +121,16 @@
                     height: height
                 }, {
                     name: 'left_side',
-                    width: height,
-                    height: length
+                    width: length,
+                    height: height
                 }, {
                     name: 'bottom_side',
                     width: width,
                     height: length
                 }, {
                     name: 'right_side',
-                    width: height,
-                    height: length
+                    width: length,
+                    height: height
                 }, {
                     name: 'top_side',
                     width: width,
@@ -167,7 +183,7 @@
         private getSideParams() {
             const sideName = this.$route.params.sideName;
 
-            this.sideParams = this.sidesParams.find((side: sideParams) => side.name === sideName);
+            this.sideParams = this.sidesParams.find((side: Side) => side.name === sideName);
             console.log(this.sideParams);
         }
         //

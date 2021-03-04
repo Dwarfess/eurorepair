@@ -15,7 +15,7 @@
     import {Vue, Component, Prop, Watch, Model} from 'vue-property-decorator';
     import $ from 'jquery';
 
-    import {Project, Room, sideParams} from '@/components/Types';
+    import {Project, Room, Side} from '@/components/Types';
     // import RoomSketch from "@/components/project/room/RoomSketch.vue";
 
     @Component({
@@ -26,7 +26,7 @@
 
         @Prop() private roomParams: Room;
 
-        private sidesParams: sideParams[] = [];
+        private sidesParams: Side[] = [];
 
         mounted() {
             this.calculateLayout();
