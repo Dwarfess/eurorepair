@@ -18,9 +18,9 @@
           <sui-icon name="home"/>
           Home
         </sui-menu-item>
-        <sui-menu-item to="/">
+        <sui-menu-item to="/price" @click="navigate('/price')">
           <sui-icon name="gamepad"/>
-          Games
+          Price
         </sui-menu-item>
         <sui-menu-item to="/">
           <sui-icon name="camera"/>
@@ -41,6 +41,10 @@
     })
     export default class Menu extends Vue {
       private visible: boolean = true;
+
+      private navigate(path) {
+          this.$router.push(path)
+      }
     }
 </script>
 

@@ -42,13 +42,115 @@ const test = {
     bathrooms: [],
     hallways: []
 };
+const defaultServices = {
+    assembling: {
+        name: 'assembling',
+        list: [
+            {
+                id: generateId(),
+                name: 'Обои',
+                category: 'Отделочные',
+                description: 'Поклейка обоев',
+                price: 60
+            }, {
+                id: generateId(),
+                name: 'Шпаклевка',
+                category: 'Отделочные',
+                description: 'Шпаклюем стены',
+                price: 80
+            }, {
+                id: generateId(),
+                name: 'Покраска',
+                category: 'Отделочные',
+                description: 'Красим стены',
+                price: 50
+            },
+        ]
+    },
+    disassembling: {
+        name: 'disassembling',
+        list: [
+            {
+                id: generateId(),
+                name: 'Демонтаж стен',
+                category: 'Демонтаж',
+                description: 'Ломаем стены',
+                price: 110
+            }, {
+                id: generateId(),
+                name: 'Демонтаж пола',
+                category: 'Демонтаж',
+                description: 'Срываем пол',
+                price: 130
+            }, {
+                id: generateId(),
+                name: 'Демонтаж потолка',
+                category: 'Демонтаж',
+                description: 'Разбираем потолок',
+                price: 150
+            }
+        ]
+    },
+    special: {
+        name: 'special',
+        list: [
+            {
+                id: generateId(),
+                name: 'Монтаж окна',
+                category: 'Спец монтаж',
+                description: 'Вставить окно, запенить, выноврять по уровню',
+                price: 1400
+            }, {
+                id: generateId(),
+                name: 'Повесить люстру',
+                category: 'Спац монтаж',
+                description: 'Повесить и подключить люстру',
+                price: 670
+            }, {
+                id: generateId(),
+                name: 'Разобрать полку',
+                category: 'Спец демонтаж',
+                description: 'Разобрать полку под потолком',
+                price: 400
+            }
+        ]
+    },
+    other: {
+        name: 'other',
+        list: [
+            {
+                id: generateId(),
+                name: 'Сливная яма',
+                category: 'Земляные',
+                description: 'Выкопать сливную яму',
+                price: 1400
+            }, {
+                id: generateId(),
+                name: 'Стяжка',
+                category: 'Черновые ',
+                description: 'Залить стяжку',
+                price: 100
+            }, {
+                id: generateId(),
+                name: 'Армировка пола',
+                category: 'Подготовительные',
+                description: 'Укладка сетки перед стяжкой',
+                price: 60
+            }
+        ]
+    },
+};
+
+function generateId() {
+    return Math.trunc(new Date().getTime() * Math.random());
+}
 
 export default new Vuex.Store({
     state: {
         projects: [],
         // projectParams: test,
         newProject: {
-            _tempId: Math.trunc(new Date().getTime() * Math.random()),
+            _tempId: generateId(),
             date: new Date().getTime(),
             image: 'require("../assets/img/body.jpg")',
             active: false,
@@ -74,7 +176,8 @@ export default new Vuex.Store({
             {text: 'restroom', value: 'restroom'},
             {text: 'bathroom', value: 'bathroom'},
             {text: 'hallway', value: 'hallway'}
-        ]
+        ],
+        defaultServices: defaultServices
     },
     mutations: {
         SET_PROJECTS: (state: any, projects: Project[]) => {
@@ -126,7 +229,7 @@ export default new Vuex.Store({
         DELETE_PROJECT: async (context, id) => {
             const {data} = await Axios.delete(`/projects/deleteProject/${id}`);
             context.commit('OPEN_MAIN_PAGE', data.status);
-        },
+        }
     },
     modules: {},
 });
