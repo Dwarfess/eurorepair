@@ -41,3 +41,12 @@ export interface Side {
     width: number,
     height: number
 }
+
+export interface Service {
+    id: number,
+    type: string,
+    name: string,
+    category: string,
+    description: string,
+    price: number
+}

@@ -8,13 +8,13 @@
       </h3>
       <sui-menu-menu class="search" position="right">
         <sui-menu-item>
-          <sui-input transparent icon="search" placeholder="Search..." />
+          <sui-input transparent icon="search" v-model="search" placeholder="Search..."/>
         </sui-menu-item>
       </sui-menu-menu>
-      <sui-button color="yellow" size="large" inverted circular icon="print" />
+      <sui-button color="yellow" size="large" inverted circular icon="print"/>
     </sui-menu>
 
-    <sui-tab class="tabs"
+    <sui-tab class="tabs" v-if="services"
              :menu="{
         color: 'yellow',
         inverted: true,
@@ -22,9 +22,12 @@
         tabular: false,
       }"
     >
-      <sui-tab-pane icon="users" class="all" title="all" label="14" :attached="false" v-if="services">
+
+      <sui-tab-pane :class="type" v-for="(type, index) in types" :key="index" icon="users" :title="type"
+                    :label="getTypeCollectionLength(type)" :attached="false">
+
         <!--insert table into tab-->
-        <sui-table selectable celled inverted v-for="(category, index) in services" :key="index">
+        <sui-table selectable celled inverted>
           <sui-table-header>
             <sui-table-row>
               <sui-table-header-cell class="service">Service</sui-table-header-cell>
@@ -36,7 +39,7 @@
           </sui-table-header>
 
           <sui-table-body>
-            <sui-table-row v-for="service in category.list" :key="service.id">
+            <sui-table-row v-if="type === 'all' || type === service.type" v-for="service in services" :key="service.id">
               <sui-table-cell class="service">{{service.name}}</sui-table-cell>
               <sui-table-cell class="category">{{service.category}}</sui-table-cell>
               <sui-table-cell class="description">{{service.description}}</sui-table-cell>
@@ -44,47 +47,58 @@
 
               <sui-table-cell class="action" text-align="right">
                 <sui-button-group size="tiny">
-                  <sui-button color="yellow" icon="edit" />
-                  <sui-button-or />
-                  <sui-button icon="delete" />
+                  <sui-button color="yellow" icon="edit"/>
+                  <sui-button-or/>
+                  <sui-button icon="delete" @click="deleteService(service.id)"/>
                 </sui-button-group>
               </sui-table-cell>
 
             </sui-table-row>
           </sui-table-body>
         </sui-table>
+      </sui-tab-pane>
 
-      </sui-tab-pane>
-      <sui-tab-pane icon="users" class="assembling" title="assembling" label="14" :attached="false">
-        assembling
-      </sui-tab-pane>
-      <sui-tab-pane icon="users" class="disassembling" title="disassembling" label="14" :attached="false">
-        disassembling
-      </sui-tab-pane>
-      <sui-tab-pane icon="users" class="special" title="special" label="14" :attached="false">
-        special
-      </sui-tab-pane>
-      <sui-tab-pane icon="users" class="other" title="other" label="14" :attached="false">
-        other
-      </sui-tab-pane>
     </sui-tab>
-
   </section>
 
 </template>
 
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
+    import {Service} from "@/components/Types";
 
     @Component({
         components: {},
         directives: {}
     })
     export default class PricePage extends Vue {
-        private services: {};
+        private services: Service[];
+        private servicesTypes: string[];
+        private types: string[];
+        private search: string = '';
+
+        @Watch('search')
+        private filterServices() {
+            this.services = this.$store.state.defaultServices
+                .filter((service) => service.name.toLowerCase().includes(this.search.toLowerCase()));
+        }
 
         beforeCreate(): void {
             this.services = this.$store.state.defaultServices;
+            this.servicesTypes = this.services.map((service) => service.type);
+            this.servicesTypes.unshift('all');
+            this.types = this.servicesTypes.filter((item, pos) => this.servicesTypes.indexOf(item) == pos);
+        }
+
+        private getTypeCollectionLength(type) {
+            const filteredServices = this.services.filter((service) => type === 'all' || type === service.type);
+            return filteredServices.length.toString();
+        }
+
+        private deleteService(id) {
+            const index = this.services.map((item) => item.id).indexOf(id);
+
+            this.services.splice(index, 1);
         }
     }
 </script>
@@ -135,7 +149,7 @@
 
     .tabs {
       height: calc(100% - 50px); //services_header - 40px, general padding - 10px
-      /deep/.menu {
+      /deep/ .menu {
         background: none;
         maggin-bottom: 25px;
 
@@ -154,11 +168,20 @@
 
         .table {
           background: none;
-          box-shadow: 0px 0px 10px 1px black;
+          /*box-shadow: 0px 0px 10px 1px black;*/
 
-          .service {width: 150px}
-          .category {width: 150px}
-          .action {width: 90px}
+          .service {
+            width: 150px
+          }
+
+          .category {
+            width: 150px
+          }
+
+          .action {
+            width: 90px
+          }
+
           .price {
             width: 90px;
             font-weight: bold;
