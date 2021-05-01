@@ -3,7 +3,6 @@ const router = express.Router();
 
 const projectsController = require("../controllers/projectsController");
 
-// router.get('/getAllProjects', projectsController.getAllProjects);
 router.get('/', projectsController.getProjects);
 router.get('/getProject/:id', projectsController.getProject);
 router.put('/updateProject', projectsController.updateProject);

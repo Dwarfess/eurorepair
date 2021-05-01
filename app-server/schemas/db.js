@@ -52,4 +52,5 @@ const gracefulShutdown = function(msg, callback) {
 
 module.exports.mongoose = mongoose;
 require('./projectSchema');
+require('./servicesSchema');
 

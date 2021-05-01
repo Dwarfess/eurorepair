@@ -2,8 +2,8 @@
 // var url = require('url');
 // var qs = require("querystring");
 
-var mongoose = require('mongoose');
-var projectModel = mongoose.model('project');
+const mongoose = require('mongoose');
+const projectModel = mongoose.model('project');
 
 exports.getProjects = function(req, res, next) {
     projectModel.find({}, function(err, docs) {
