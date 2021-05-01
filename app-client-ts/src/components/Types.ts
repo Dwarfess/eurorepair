@@ -50,3 +50,8 @@ export interface Service {
     description: string,
     price: number
 }
+
+export interface ServiceType {
+    text: string,
+    value: string
+}

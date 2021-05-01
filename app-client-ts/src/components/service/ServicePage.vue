@@ -1,7 +1,7 @@
 <template lang="html">
 
-  <section class="price-page">
-    <sui-menu class="services_header" pointing>
+  <section class="service-page">
+    <sui-menu class="services-header" pointing>
       <h3>
         <span>Services </span>
         <span>list</span>
@@ -14,7 +14,7 @@
       <sui-button color="yellow" size="large" inverted circular icon="print"/>
     </sui-menu>
 
-    <sui-tab class="tabs" v-if="services"
+    <sui-tab class="services-tabs" v-if="services"
              :menu="{
         color: 'yellow',
         inverted: true,
@@ -39,18 +39,18 @@
           </sui-table-header>
 
           <sui-table-body>
-            <sui-table-row v-if="type === 'all' || type === service.type" v-for="service in services" :key="service.id">
+            <sui-table-row v-if="type === 'all' || type === service.type" v-for="(service, index) in services" :key="service.id">
               <sui-table-cell class="service">{{service.name}}</sui-table-cell>
               <sui-table-cell class="category">{{service.category}}</sui-table-cell>
               <sui-table-cell class="description">{{service.description}}</sui-table-cell>
               <sui-table-cell class="price" text-align="right">{{service.price}}</sui-table-cell>
 
               <sui-table-cell class="action" text-align="right">
-                <sui-button-group size="tiny">
-                  <sui-button color="yellow" icon="edit"/>
+                <div is="sui-button-group" size="tiny">
+                  <ServiceEditor @changeService="changeService" @deleteService="deleteService" :service="service"></ServiceEditor>
                   <sui-button-or/>
                   <sui-button icon="delete" @click="deleteService(service.id)"/>
-                </sui-button-group>
+                </div>
               </sui-table-cell>
 
             </sui-table-row>
@@ -59,6 +59,31 @@
       </sui-tab-pane>
 
     </sui-tab>
+
+    <div class="services-footer" v-if="services">
+      <div is="sui-button-group">
+        <sui-button size="large" color="teal" @click.native="saveServices">Save</sui-button>
+        <sui-button-or size="large"/>
+        <sui-button size="large" color="yellow" @click.native="resetServices" :disabled="!!services">Reset</sui-button>
+        <sui-button-or size="large"/>
+        <sui-button size="large" @click.native="toggleDeletionConfirmationDialog" :disabled="!!services">Delete</sui-button>
+      </div>
+
+      <div class="add-service">
+        <ServiceEditor @changeService="changeService" @deleteService="deleteService" :service="{}"></ServiceEditor>
+      </div>
+    </div>
+
+    <sui-modal v-model="showDeletionConfirmationDialog">
+      <sui-modal-content>
+        <p>Are you sure you want to reset service list?</p>
+      </sui-modal-content>
+      <div is="sui-button-group">
+        <sui-button color="teal" @click.native="deleteProject">Confirm</sui-button>
+        <sui-button-or/>
+        <sui-button color="yellow" @click.native="cancelToDeleteProject">Cancel</sui-button>
+      </div>
+    </sui-modal>
   </section>
 
 </template>
@@ -66,13 +91,17 @@
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
     import {Service} from "@/components/Types";
+    import ServiceEditor from "@/components/service/ServiceEditor.vue";
 
     @Component({
-        components: {},
+        components: {
+            ServiceEditor
+        },
         directives: {}
     })
-    export default class PricePage extends Vue {
-        private services: Service[];
+    export default class ServicePage extends Vue {
+        private showDeletionConfirmationDialog: boolean = false;
+        private services: Service[] = [];
         private servicesTypes: string[];
         private types: string[];
         private search: string = '';
@@ -81,9 +110,15 @@
         private filterServices() {
             this.services = this.$store.state.defaultServices
                 .filter((service) => service.name.toLowerCase().includes(this.search.toLowerCase()));
+            console.log(this.services);
         }
 
-        beforeCreate(): void {
+        @Watch('services')
+        private watchServices() {
+            console.log(this.services);
+        }
+
+        created(): void {
             this.services = this.$store.state.defaultServices;
             this.servicesTypes = this.services.map((service) => service.type);
             this.servicesTypes.unshift('all');
@@ -96,9 +131,45 @@
         }
 
         private deleteService(id) {
-            const index = this.services.map((item) => item.id).indexOf(id);
+            const index = this.services.map((service) => service.id).indexOf(id);
 
             this.services.splice(index, 1);
+            // this.$store.state.defaultServices.splice(index, 1);
+        }
+
+        private changeService(changedService) {
+            const service = this.services.find((service) => service.id === changedService.id);
+
+            if (service) {
+                service.type = changedService.type;
+                service.name = changedService.name;
+                service.price = changedService.price;
+                service.description = changedService.description;
+
+            } else {
+                this.services.push(changedService);
+
+            }
+        }
+
+        private saveServices() {
+            this.$store.dispatch('SAVE_SERVICES', this.services);
+        }
+
+        private resetServices() {
+
+        }
+
+        private toggleDeletionConfirmationDialog() {
+            this.showDeletionConfirmationDialog = !this.showDeletionConfirmationDialog;
+        }
+
+        private deleteProject() {
+            this.$store.dispatch('DELETE_PROJECT', this.services);
+        }
+
+        private cancelToDeleteProject() {
+            this.toggleDeletionConfirmationDialog();
         }
     }
 </script>
@@ -106,11 +177,11 @@
 <style scoped lang="scss">
   @import '../../variables';
 
-  .price-page {
+  .service-page {
     padding: 10px;
     height: calc(100% - 31px); //footer 31px
 
-    .services_header {
+    .services-header {
       background: none;
       box-shadow: none;
       margin-bottom: 5px;
@@ -147,8 +218,8 @@
       }
     }
 
-    .tabs {
-      height: calc(100% - 50px); //services_header - 40px, general padding - 10px
+    .services-tabs {
+      height: calc(100% - 97px); //header - 40px, footer - 52px, general padding - 5px
       /deep/ .menu {
         background: none;
         maggin-bottom: 25px;
@@ -162,13 +233,15 @@
 
       .tab {
         background: none;
+        box-shadow: none;
+        border: none;
         padding: 0;
         height: calc(100% - 72px); //menu - 47px, margin-bottom - 25px
         overflow: auto;
 
         .table {
           background: none;
-          /*box-shadow: 0px 0px 10px 1px black;*/
+          border: 1px solid rgba(255,255,255,.1);
 
           .service {
             width: 150px
@@ -191,6 +264,16 @@
             color: lighten($subBgColor, 40%) !important;
           }
         }
+      }
+    }
+
+    .services-footer {
+      height: 52px;
+      padding-top: 10px;
+      text-align: left;
+
+      .add-service {
+        float: right;
       }
     }
   }
