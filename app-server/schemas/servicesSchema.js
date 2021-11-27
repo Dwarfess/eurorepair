@@ -4,12 +4,9 @@ mongoose.Promise = global.Promise;
 
 //setting the schema
 const servicesSchema = new Schema({
-    id: Number,
-    type: String,
+    user_id: Number,
     name: String,
-    category: String,
-    description: String,
-    price: Number
+    serviceList: Array
 });
 
 mongoose.model('services', servicesSchema); // create module with schema

@@ -14,7 +14,7 @@
       <sui-button color="yellow" size="large" inverted circular icon="print"/>
     </sui-menu>
 
-    <sui-tab class="services-tabs" v-if="services"
+    <sui-tab class="services-tabs" v-if="serviceList"
              :menu="{
         color: 'yellow',
         inverted: true,
@@ -39,7 +39,7 @@
           </sui-table-header>
 
           <sui-table-body>
-            <sui-table-row v-if="type === 'all' || type === service.type" v-for="(service, index) in services" :key="service.id">
+            <sui-table-row v-if="type === 'all' || type === service.type" v-for="(service, index) in serviceList" :key="service.id">
               <sui-table-cell class="service">{{service.name}}</sui-table-cell>
               <sui-table-cell class="category">{{service.category}}</sui-table-cell>
               <sui-table-cell class="description">{{service.description}}</sui-table-cell>
@@ -90,7 +90,7 @@
 
 <script lang="ts">
     import {Vue, Component, Watch, Model} from 'vue-property-decorator';
-    import {Service} from "@/components/Types";
+    import {Service, Services} from "@/components/Types";
     import ServiceEditor from "@/components/service/ServiceEditor.vue";
 
     @Component({
@@ -101,14 +101,20 @@
     })
     export default class ServicePage extends Vue {
         private showDeletionConfirmationDialog: boolean = false;
-        private services: Service[] = [];
+        // private services: Services = [];
+        private serviceList: Service[] = [];
         private servicesTypes: string[];
         private types: string[];
         private search: string = '';
 
+        // @Watch('$store.state.services')
+        // private watchProjectParams() {
+        //     this.services = this.$store.state.defaultServices;
+        // }
+
         @Watch('search')
         private filterServices() {
-            this.services = this.$store.state.defaultServices
+            this.serviceList = this.services.serviceList
                 .filter((service) => service.name.toLowerCase().includes(this.search.toLowerCase()));
             console.log(this.services);
         }
@@ -118,27 +124,39 @@
             console.log(this.services);
         }
 
+        beforeCreate(): void {
+            const service_id = '608fe11bd1529616dc713283';
+
+            this.$store.dispatch('GET_SERVICES', service_id);
+        }
+
         created(): void {
-            this.services = this.$store.state.defaultServices;
-            this.servicesTypes = this.services.map((service) => service.type);
+            // this.services = this.$store.state.defaultServices;
+            this.serviceList = this.services.serviceList;
+            this.servicesTypes = this.serviceList.map((service) => service.type);
             this.servicesTypes.unshift('all');
             this.types = this.servicesTypes.filter((item, pos) => this.servicesTypes.indexOf(item) == pos);
         }
 
-        private getTypeCollectionLength(type) {
-            const filteredServices = this.services.filter((service) => type === 'all' || type === service.type);
+        private rerender(): void {
+
+        }
+
+        private getTypeCollectionLength(type): string {
+            const filteredServices = this.serviceList.filter((service) => type === 'all' || type === service.type);
+
             return filteredServices.length.toString();
         }
 
-        private deleteService(id) {
-            const index = this.services.map((service) => service.id).indexOf(id);
+        private deleteService(id): void {
+            const index = this.serviceList.map((service) => service.id).indexOf(id);
 
-            this.services.splice(index, 1);
+            this.serviceList.splice(index, 1);
             // this.$store.state.defaultServices.splice(index, 1);
         }
 
-        private changeService(changedService) {
-            const service = this.services.find((service) => service.id === changedService.id);
+        private changeService(changedService): void {
+            const service = this.serviceList.find((service) => service.id === changedService.id);
 
             if (service) {
                 service.type = changedService.type;
@@ -147,13 +165,17 @@
                 service.description = changedService.description;
 
             } else {
-                this.services.push(changedService);
-
+                this.serviceList.push(changedService);
             }
         }
 
-        private saveServices() {
-            this.$store.dispatch('SAVE_SERVICES', this.services);
+        private saveServices(): void {
+            this.services.serviceList = this.serviceList;
+            if (this.services._id) {
+                this.$store.dispatch('UPDATE_SERVICES', this.services);
+            } else {
+                this.$store.dispatch('CREATE_SERVICES', this.services);
+            }
         }
 
         private resetServices() {
@@ -170,6 +192,10 @@
 
         private cancelToDeleteProject() {
             this.toggleDeletionConfirmationDialog();
+        }
+
+        private get services(): Services {
+            return this.$store.state.defaultServices;
         }
     }
 </script>

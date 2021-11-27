@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import Axios from 'axios';
 
 import router from '../router/index'
-import {Project} from '@/components/Types';
+import {Project, Services} from '@/components/Types';
 
 Vue.use(Vuex);
 
@@ -37,7 +37,7 @@ const categories = [
     {text: 'hallway', value: 'hallway'}
 ];
 
-const defaultServices = [
+const serviceList = [
     {
         id: generateId(),
         type: 'assembling',
@@ -125,6 +125,12 @@ const defaultServices = [
     }
 ];
 
+const defaultServices = {
+    user_id: 1,
+    name: '',
+    serviceList: serviceList
+};
+
 const serviceTypes = [
     {text: 'assembling', value: 'assembling'},
     {text: 'disassembling', value: 'disassembling'},
@@ -165,6 +171,13 @@ export default new Vuex.Store({
             router.push({ name: 'projectPage', params: {id: newProject._id}});
         },
 
+        SET_NEW_SERVICES: (state: any, newServices: Services) => {
+            state.defaultServices = newServices;
+            // state.projects.push(newProject);
+
+            // router.push({ name: 'projectPage', params: {id: newProject._id}});
+        },
+
         OPEN_MAIN_PAGE: (state: any, status: number) => {
             if (status === 200) {
                 router.push({name: 'Home'});
@@ -174,6 +187,7 @@ export default new Vuex.Store({
     actions: {
         GET_PROJECTS: async (context) => {
             const {data} = await Axios.get(`/projects`);
+            console.log(data)
             context.commit('SET_PROJECTS', data);
         },
 
@@ -182,14 +196,14 @@ export default new Vuex.Store({
             context.commit('SET_PROJECT', data);
         },
 
-        SAVE_PROJECT: async (context, project) => {
-            const {data} = await Axios.put(`/projects/updateProject`, project);
-            context.commit('SET_SAVED_PROJECT', data);
-        },
-
         CREATE_PROJECT: async (context, project) => {
             const {data} = await Axios.post(`/projects/createProject`, project);
             context.commit('SET_NEW_PROJECT', data);
+        },
+
+        UPDATE_PROJECT: async (context, project) => {
+            const {data} = await Axios.put(`/projects/updateProject`, project);
+            context.commit('SET_SAVED_PROJECT', data);
         },
 
         DELETE_PROJECT: async (context, id) => {
@@ -197,7 +211,17 @@ export default new Vuex.Store({
             context.commit('OPEN_MAIN_PAGE', data.status);
         },
 
-        SAVE_SERVICES: async (context, services) => {
+        GET_SERVICES: async (context, id) => {
+            const {data} = await Axios.get(`/services/${id}`);
+            context.commit('SET_NEW_SERVICES', data);
+        },
+
+        CREATE_SERVICES: async (context, services) => {
+            const {data} = await Axios.post(`/services/createServices`, services);
+            context.commit('SET_NEW_SERVICES', data);
+        },
+
+        UPDATE_SERVICES: async (context, services) => {
             const {data} = await Axios.put(`/services/updateServices`, services);
             context.commit('SET_SAVED_PROJECT', data);
         },

@@ -42,6 +42,13 @@ export interface Side {
     height: number
 }
 
+export interface Services {
+    _id?: any,
+    user_id: string,
+    name: string,
+    serviceList: Service[]
+}
+
 export interface Service {
     id: number,
     type: string,

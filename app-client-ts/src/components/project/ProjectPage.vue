@@ -96,7 +96,7 @@
 
         private saveProject() {
             if (this.projectParams._id) {
-                this.$store.dispatch('SAVE_PROJECT', this.projectParams);
+                this.$store.dispatch('UPDATE_PROJECT', this.projectParams);
             } else {
                 this.$store.dispatch('CREATE_PROJECT', this.projectParams);
             }
